@@ -4,48 +4,48 @@
    ========================================================================== */
 
 :root {
-  /* Kurumsal Mimari Palet */
-  --obsidian-950: #070a10;
-  --obsidian-900: #0c111d;
-  --obsidian-800: #151c2c;
-  --obsidian-700: #1e293b;
-  --obsidian-600: #334155;
+  /* Kurumsal Mimari Palet (Göz Yormayan Mat Antrasit, Taş Beji ve Şampanya Bronz) */
+  --obsidian-950: #0f1622;
+  --obsidian-900: #162030;
+  --obsidian-800: #1e2b3e;
+  --obsidian-700: #29384f;
+  --obsidian-600: #3d4f69;
 
-  --stone-50: #f9f8f6;
-  --stone-100: #f2f0ec;
-  --stone-200: #e5e2dc;
-  --stone-300: #d5d0c8;
+  --stone-50: #faf9f6;
+  --stone-100: #f2f0eb;
+  --stone-200: #e2dfd8;
+  --stone-300: #cbd2dc;
 
-  --gold-300: #e5c98b;
-  --gold-400: #d4b26a;
-  --gold-500: #c5a059;
-  --gold-600: #a37e3b;
-  --gold-glow: rgba(197, 160, 89, 0.18);
+  --gold-300: #e4cfa1;
+  --gold-400: #cfb070;
+  --gold-500: #b89550;
+  --gold-600: #947436;
+  --gold-glow: rgba(184, 149, 80, 0.2);
 
-  --text-main: #0f172a;
+  --text-main: #182232;
   --text-secondary: #475569;
   --text-muted: #64748b;
 
-  /* Satış Durum Renkleri (Tüm Projelerde Tek Tip — Satılık Düz Beyaz/Renksiz) */
+  /* Satış Durum Renkleri (Matlaştırılmış, Göz Yormayan, Uyumlu Mimari Tonlar) */
   --st-satilik: #334155;
-  --st-satilik-grad: #ffffff;
+  --st-satilik-grad: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   --st-satilik-soft: #f8fafc;
   --st-satilik-border: #94a3b8;
 
-  --st-kapora: #d97706;
-  --st-kapora-grad: #d97706;
-  --st-kapora-soft: #fffbeb;
-  --st-kapora-border: #fde68a;
+  --st-kapora: #b86b19;
+  --st-kapora-grad: linear-gradient(180deg, #c47927 0%, #a86216 100%);
+  --st-kapora-soft: #fdf8f0;
+  --st-kapora-border: #e5c391;
 
-  --st-pesinat: #2563eb;
-  --st-pesinat-grad: #2563eb;
-  --st-pesinat-soft: #eff6ff;
-  --st-pesinat-border: #bfdbfe;
+  --st-pesinat: #295682;
+  --st-pesinat-grad: linear-gradient(180deg, #326291 0%, #254d75 100%);
+  --st-pesinat-soft: #f1f6fb;
+  --st-pesinat-border: #b8cfe6;
 
-  --st-satildi: #dc2626;
-  --st-satildi-grad: #dc2626;
-  --st-satildi-soft: #fef2f2;
-  --st-satildi-border: #fecaca;
+  --st-satildi: #9e3333;
+  --st-satildi-grad: linear-gradient(180deg, #ab3c3c 0%, #8f2d2d 100%);
+  --st-satildi-soft: #fcf3f3;
+  --st-satildi-border: #e5b8b8;
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -93,39 +93,39 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Canlı Durum Noktaları */
+/* Canlı Durum Noktaları (Yumuşak & Net) */
 .status-dot {
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   flex-shrink: 0;
 }
-.dot-satilik { background: #ffffff; border: 1.5px solid #64748b; box-shadow: none; }
-.dot-kapora  { background: #d97706; box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2); }
-.dot-pesinat { background: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
-.dot-satildi { background: #dc2626; box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2); }
+.dot-satilik { background: #ffffff; border: 1.5px solid #475569; box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.14); }
+.dot-kapora  { background: #c47927; box-shadow: 0 0 0 2px rgba(196, 121, 39, 0.2); }
+.dot-pesinat { background: #326291; box-shadow: 0 0 0 2px rgba(50, 98, 145, 0.2); }
+.dot-satildi { background: #ab3c3c; box-shadow: 0 0 0 2px rgba(171, 60, 60, 0.2); }
 .dot-kapali  {
   background: repeating-linear-gradient(
     -45deg,
-    #dc2626 0px,
-    #dc2626 2.5px,
-    #ffffff 2.5px,
-    #ffffff 5px
+    #b34242 0px,
+    #b34242 2.5px,
+    #f8fafc 2.5px,
+    #f8fafc 5px
   );
-  border: 1.5px solid #991b1b;
-  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.22);
+  border: 1.5px solid #822727;
+  box-shadow: 0 0 0 2px rgba(179, 66, 66, 0.18);
 }
 .dot-satisa-kapali {
   background: repeating-linear-gradient(
     -45deg,
-    #0f172a 0px,
-    #0f172a 2.5px,
-    #ffffff 2.5px,
-    #ffffff 5px
+    #334155 0px,
+    #334155 2.5px,
+    #f8fafc 2.5px,
+    #f8fafc 5px
   );
-  border: 1.5px solid #0f172a;
-  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.22);
+  border: 1.5px solid #1e293b;
+  box-shadow: 0 0 0 2px rgba(51, 65, 85, 0.18);
 }
 
 /* ==========================================================================
@@ -154,9 +154,9 @@ html, body {
    1. SOL DOCK: PORTFÖY NAVİGASYONU & KONTROL MERKEZİ
    ========================================================================== */
 .studio-sidebar {
-  background: var(--obsidian-900);
-  color: #f8fafc;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, #151f2e 0%, #111927 100%);
+  color: #f1f5f9;
+  border-right: 1px solid rgba(203, 213, 225, 0.12);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -171,9 +171,9 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 14px 16px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(0, 0, 0, 0.22);
+  padding: 15px 14px 15px 16px;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.1);
+  background: rgba(15, 22, 34, 0.45);
 }
 
 .brand-emblem {
@@ -181,8 +181,8 @@ html, body {
   height: 42px;
   border-radius: 9px;
   background: #ffffff;
-  border: 1.5px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,23 +203,23 @@ html, body {
 }
 
 .brand-title {
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
-  color: #ffffff;
+  letter-spacing: 0.03em;
+  color: #f8fafc;
   line-height: 1.15;
   white-space: nowrap;
 }
 
 .brand-title span {
-  color: var(--gold-500);
+  color: var(--gold-400);
   font-weight: 700;
 }
 
 .brand-subtitle {
   font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: #94a3b8;
   margin-top: 2px;
   white-space: nowrap;
@@ -228,35 +228,35 @@ html, body {
 .sidebar-collapse-btn {
   width: 32px;
   height: 32px;
-  border-radius: 7px;
-  border: 1.5px solid rgba(203, 213, 225, 0.35);
-  background: linear-gradient(180deg, rgba(51, 65, 85, 0.85) 0%, rgba(30, 41, 59, 0.95) 100%);
-  color: #f1f5f9;
+  border-radius: 8px;
+  border: 1px solid rgba(203, 213, 225, 0.26);
+  background: linear-gradient(180deg, #26354a 0%, #1c283a 100%);
+  color: #e2e8f0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 5px rgba(0, 0, 0, 0.35);
-  transition: all 0.15s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: all 0.16s ease;
 }
 
 .sidebar-collapse-btn:hover {
-  background: rgba(197, 160, 89, 0.28);
+  background: linear-gradient(180deg, #31435c 0%, #253449 100%);
   border-color: var(--gold-400);
   color: var(--gold-300);
 }
 
 /* Çalışma Modu Menüsü */
 .sidebar-nav-section {
-  padding: 12px 14px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.1);
 }
 
 .sidebar-section-label {
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.11em;
   color: #94a3b8;
   margin-bottom: 8px;
   display: block;
@@ -275,46 +275,46 @@ html, body {
   width: 100%;
   padding: 9px 12px;
   border-radius: 8px;
-  border: 1.5px solid rgba(203, 213, 225, 0.28);
-  border-left: 3.5px solid rgba(148, 163, 184, 0.5);
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
-  color: #e2e8f0;
+  border: 1px solid rgba(203, 213, 225, 0.22);
+  border-left: 3.5px solid rgba(148, 163, 184, 0.45);
+  background: linear-gradient(180deg, #212f42 0%, #192434 100%);
+  color: #cbd5e1;
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.16s ease;
   text-align: left;
 }
 
 .nav-tab:hover {
-  color: #ffffff;
-  background: linear-gradient(180deg, rgba(51, 65, 85, 0.92) 0%, rgba(30, 41, 59, 0.98) 100%);
-  border-color: rgba(197, 160, 89, 0.7);
+  color: #f8fafc;
+  background: linear-gradient(180deg, #2a3b52 0%, #202e42 100%);
+  border-color: rgba(207, 176, 112, 0.55);
   border-left-color: var(--gold-400);
   transform: translateY(-1px);
 }
 
 .nav-tab.active {
-  background: linear-gradient(90deg, rgba(197, 160, 89, 0.28) 0%, rgba(30, 41, 59, 0.95) 100%);
-  color: var(--gold-300);
-  border-color: var(--gold-400);
+  background: linear-gradient(90deg, rgba(184, 149, 80, 0.24) 0%, #223147 100%);
+  color: #f3e5c2;
+  border-color: rgba(207, 176, 112, 0.65);
   border-left: 4px solid var(--gold-400);
-  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.28), 0 4px 12px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 3px 10px rgba(0, 0, 0, 0.26);
   font-weight: 800;
 }
 
 /* Sidebar Genel Portföy Telemetri Kartı */
 .sidebar-telemetry {
   padding: 12px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.015);
+  border-bottom: 1px solid rgba(203, 213, 225, 0.1);
+  background: rgba(15, 22, 34, 0.25);
 }
 
 .telemetry-box {
-  background: rgba(0, 0, 0, 0.32);
-  border: 1px solid rgba(203, 213, 225, 0.16);
+  background: rgba(15, 22, 34, 0.55);
+  border: 1px solid rgba(203, 213, 225, 0.15);
   border-radius: 9px;
   padding: 10px 12px;
 }
@@ -323,22 +323,22 @@ html, body {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
 }
 
 .telemetry-title {
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #94a3b8;
+  letter-spacing: 0.07em;
+  color: #cbd5e1;
   text-transform: uppercase;
 }
 
 .telemetry-rate {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  color: var(--gold-400);
+  color: var(--gold-300);
 }
 
 .telemetry-bar {
@@ -350,26 +350,26 @@ html, body {
   margin-bottom: 9px;
 }
 
-.telemetry-seg-satildi { background: #ef4444; }
-.telemetry-seg-pesinat { background: #3b82f6; }
-.telemetry-seg-kapora  { background: #f59e0b; }
-.telemetry-seg-satilik { background: #22c55e; }
+.telemetry-seg-satildi { background: #b84a4a; }
+.telemetry-seg-pesinat { background: #3f74a8; }
+.telemetry-seg-kapora  { background: #cf8532; }
+.telemetry-seg-satilik { background: #469c76; }
 .telemetry-seg-kapali  {
   background: repeating-linear-gradient(
     -45deg,
-    #dc2626 0px,
-    #dc2626 3px,
-    #ffffff 3px,
-    #ffffff 6px
+    #b34242 0px,
+    #b34242 3px,
+    #f1f5f9 3px,
+    #f1f5f9 6px
   );
 }
 .telemetry-seg-satisa-kapali {
   background: repeating-linear-gradient(
     -45deg,
-    #0f172a 0px,
-    #0f172a 3px,
-    #ffffff 3px,
-    #ffffff 6px
+    #475569 0px,
+    #475569 3px,
+    #f1f5f9 3px,
+    #f1f5f9 6px
   );
 }
 
@@ -383,10 +383,10 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4px 2px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 5px;
+  padding: 5px 3px;
+  background: rgba(30, 43, 62, 0.55);
+  border: 1px solid rgba(203, 213, 225, 0.1);
+  border-radius: 6px;
 }
 
 .t-stat-val {
@@ -399,7 +399,7 @@ html, body {
 .t-stat-lbl {
   font-size: 0.58rem;
   font-weight: 700;
-  color: #cbd5e1;
+  color: #94a3b8;
   margin-top: 2px;
 }
 
@@ -422,23 +422,23 @@ html, body {
 .btn-sidebar-action {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
+  gap: 5px;
+  padding: 5px 10px;
   border-radius: 6px;
   font-size: 0.7rem;
-  font-weight: 800;
-  background: linear-gradient(180deg, rgba(197, 160, 89, 0.28) 0%, rgba(197, 160, 89, 0.16) 100%);
+  font-weight: 700;
+  background: linear-gradient(180deg, rgba(184, 149, 80, 0.25) 0%, rgba(184, 149, 80, 0.14) 100%);
   color: var(--gold-300);
-  border: 1.5px solid var(--gold-400);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(207, 176, 112, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 3px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
 }
 
 .btn-sidebar-action:hover {
   background: var(--gold-500);
-  color: var(--obsidian-950);
-  border-color: #fde68a;
+  color: #ffffff;
+  border-color: var(--gold-300);
 }
 
 .sidebar-search-box {
@@ -449,22 +449,22 @@ html, body {
 
 .sidebar-search-box .search-icon {
   position: absolute;
-  left: 9px;
+  left: 10px;
   color: #94a3b8;
   pointer-events: none;
 }
 
 .sidebar-search-box input {
   width: 100%;
-  padding: 8px 10px 8px 30px;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1.5px solid rgba(203, 213, 225, 0.26);
+  padding: 8px 10px 8px 31px;
+  background: rgba(15, 22, 34, 0.75);
+  border: 1px solid rgba(203, 213, 225, 0.22);
   border-radius: 7px;
-  color: #f8fafc;
+  color: #f1f5f9;
   font-family: var(--font-sans);
   font-size: 0.76rem;
   outline: none;
-  transition: border-color 0.15s;
+  transition: all 0.15s ease;
 }
 
 .sidebar-search-box input::placeholder {
@@ -473,7 +473,8 @@ html, body {
 
 .sidebar-search-box input:focus {
   border-color: var(--gold-400);
-  background: rgba(30, 41, 59, 0.95);
+  background: rgba(22, 32, 48, 0.95);
+  box-shadow: 0 0 0 2px rgba(184, 149, 80, 0.16);
 }
 
 /* Dikey Proje Portföy Listesi */
@@ -483,14 +484,14 @@ html, body {
   padding: 6px 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .sidebar-project-list::-webkit-scrollbar {
   width: 5px;
 }
 .sidebar-project-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(203, 213, 225, 0.2);
   border-radius: 99px;
 }
 
@@ -499,22 +500,22 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 11px 12px 11px 14px;
+  padding: 10px 12px 10px 13px;
   border-radius: 9px;
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.96) 100%);
-  border: 1.5px solid rgba(203, 213, 225, 0.32);
-  border-left: 4px solid rgba(148, 163, 184, 0.65);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 3px 7px rgba(0, 0, 0, 0.38);
+  background: linear-gradient(180deg, #212f42 0%, #192434 100%);
+  border: 1px solid rgba(203, 213, 225, 0.24);
+  border-left: 3.5px solid rgba(148, 163, 184, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 5px rgba(0, 0, 0, 0.24);
   cursor: pointer;
   transition: all 0.16s ease;
   text-align: left;
 }
 
 .project-tab:hover {
-  background: linear-gradient(180deg, rgba(51, 65, 85, 0.96) 0%, rgba(30, 41, 59, 0.98) 100%);
-  border-color: rgba(197, 160, 89, 0.8);
+  background: linear-gradient(180deg, #2a3b52 0%, #202e42 100%);
+  border-color: rgba(207, 176, 112, 0.65);
   border-left-color: var(--gold-400);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 5px 12px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 10px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
 }
 
@@ -523,10 +524,10 @@ html, body {
 }
 
 .project-tab.active {
-  background: linear-gradient(135deg, rgba(197, 160, 89, 0.28) 0%, rgba(30, 41, 59, 0.96) 100%);
-  border: 1.5px solid var(--gold-400);
+  background: linear-gradient(135deg, rgba(184, 149, 80, 0.24) 0%, #233248 100%);
+  border: 1px solid rgba(207, 176, 112, 0.75);
   border-left: 4px solid var(--gold-400);
-  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.35), 0 6px 16px rgba(0, 0, 0, 0.48);
+  box-shadow: 0 0 0 1px rgba(184, 149, 80, 0.22), 0 5px 14px rgba(0, 0, 0, 0.32);
 }
 
 .project-tab.active::before {
@@ -541,9 +542,9 @@ html, body {
 }
 
 .pt-title {
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: #f8fafc;
+  font-size: 0.81rem;
+  font-weight: 700;
+  color: #f1f5f9;
   line-height: 1.25;
   display: flex;
   align-items: center;
@@ -551,7 +552,8 @@ html, body {
 }
 
 .project-tab.active .pt-title {
-  color: #fde68a;
+  color: #f5e6c4;
+  font-weight: 800;
 }
 
 .proj-edit-trigger {
@@ -561,10 +563,10 @@ html, body {
   width: 22px;
   height: 22px;
   border-radius: 5px;
-  border: 1px solid rgba(203, 213, 225, 0.3);
-  background: rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
-  opacity: 0.9;
+  border: 1px solid rgba(203, 213, 225, 0.24);
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  opacity: 0.85;
   transition: all 0.15s;
 }
 
@@ -575,7 +577,7 @@ html, body {
 
 .proj-edit-trigger:hover {
   opacity: 1 !important;
-  background: rgba(197, 160, 89, 0.32);
+  background: rgba(184, 149, 80, 0.28);
   border-color: var(--gold-400);
   color: var(--gold-300);
 }
@@ -586,25 +588,35 @@ html, body {
   justify-content: space-between;
   font-size: 0.69rem;
   font-weight: 600;
+  color: #94a3b8;
+}
+
+.project-tab.active .pt-sub-row {
   color: #cbd5e1;
 }
 
 .pt-badge {
   font-family: var(--font-mono);
   font-size: 0.66rem;
-  font-weight: 800;
+  font-weight: 700;
   padding: 2px 7px;
   border-radius: 5px;
-  background: rgba(34, 197, 94, 0.2);
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, 0.45);
+  background: rgba(148, 163, 184, 0.14);
+  color: #cbd5e1;
+  border: 1px solid rgba(203, 213, 225, 0.22);
   flex-shrink: 0;
+}
+
+.project-tab.active .pt-badge {
+  background: rgba(184, 149, 80, 0.24);
+  color: #f3dfb6;
+  border-color: rgba(207, 176, 112, 0.5);
 }
 
 .pt-mini-bar {
   height: 4px;
   border-radius: 99px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
   display: flex;
   overflow: hidden;
   margin-top: 2px;
@@ -613,8 +625,8 @@ html, body {
 /* Sidebar Alt Oturum ve Bağlantı Alanı */
 .sidebar-footer {
   padding: 10px 14px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(0, 0, 0, 0.32);
+  border-top: 1px solid rgba(203, 213, 225, 0.1);
+  background: rgba(15, 22, 34, 0.45);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -640,34 +652,34 @@ html, body {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  background: #469c76;
+  box-shadow: 0 0 0 3px rgba(70, 156, 118, 0.22);
 }
 
 .sync-badge.offline .pulse-dot {
-  background: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+  background: #b84a4a;
+  box-shadow: 0 0 0 3px rgba(184, 74, 74, 0.22);
 }
 
 .btn-icon-subtle {
   width: 32px;
   height: 32px;
   border-radius: 7px;
-  border: 1.5px solid rgba(203, 213, 225, 0.32);
-  background: linear-gradient(180deg, rgba(51, 65, 85, 0.8) 0%, rgba(30, 41, 59, 0.92) 100%);
-  color: #f1f5f9;
+  border: 1px solid rgba(203, 213, 225, 0.26);
+  background: linear-gradient(180deg, #26354a 0%, #1c283a 100%);
+  color: #e2e8f0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 4px rgba(0, 0, 0, 0.3);
-  transition: all 0.15s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: all 0.15s ease;
 }
 
 .btn-icon-subtle:hover {
-  background: rgba(197, 160, 89, 0.25);
+  background: linear-gradient(180deg, #31435c 0%, #253449 100%);
   border-color: var(--gold-400);
-  color: #ffffff;
+  color: var(--gold-300);
 }
 
 .sidebar-auth-actions {
@@ -684,32 +696,33 @@ html, body {
   gap: 8px;
   padding: 9px 12px;
   border-radius: 8px;
-  border: 1.5px solid rgba(203, 213, 225, 0.32);
-  background: linear-gradient(180deg, rgba(51, 65, 85, 0.85) 0%, rgba(30, 41, 59, 0.95) 100%);
-  color: #f8fafc;
+  border: 1px solid rgba(203, 213, 225, 0.25);
+  background: linear-gradient(180deg, #26354a 0%, #1c283a 100%);
+  color: #f1f5f9;
   font-family: var(--font-sans);
   font-size: 0.77rem;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 5px rgba(0, 0, 0, 0.35);
-  transition: all 0.15s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.16s ease;
 }
 
 .btn-sidebar-full:hover {
-  background: linear-gradient(180deg, rgba(71, 85, 105, 0.92) 0%, rgba(51, 65, 85, 0.98) 100%);
-  border-color: rgba(255, 255, 255, 0.55);
+  background: linear-gradient(180deg, #31435c 0%, #253449 100%);
+  border-color: rgba(207, 176, 112, 0.55);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
 .btn-sidebar-gold {
-  background: linear-gradient(180deg, rgba(197, 160, 89, 0.3) 0%, rgba(197, 160, 89, 0.16) 100%);
-  border: 1.5px solid var(--gold-400);
-  color: var(--gold-300);
+  background: linear-gradient(180deg, rgba(184, 149, 80, 0.28) 0%, rgba(184, 149, 80, 0.16) 100%);
+  border: 1px solid rgba(207, 176, 112, 0.6);
+  color: #f3e5c2;
 }
 
 .btn-sidebar-gold:hover {
-  background: linear-gradient(180deg, rgba(197, 160, 89, 0.42) 0%, rgba(197, 160, 89, 0.26) 100%);
-  border-color: #fde68a;
+  background: linear-gradient(180deg, rgba(184, 149, 80, 0.4) 0%, rgba(184, 149, 80, 0.24) 100%);
+  border-color: var(--gold-300);
   color: #ffffff;
 }
 
@@ -719,7 +732,7 @@ html, body {
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 99px;
-  background: #dc2626;
+  background: #ab3c3c;
   color: #ffffff;
 }
 
@@ -735,21 +748,22 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 7px 10px;
+  padding: 8px 10px;
   border-radius: 7px;
-  background: rgba(21, 128, 61, 0.22);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  color: #86efac;
+  background: rgba(54, 128, 95, 0.22);
+  border: 1px solid rgba(70, 156, 118, 0.45);
+  color: #a7f3d0;
   font-family: var(--font-sans);
   font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .btn-session-active:hover {
-  background: rgba(220, 38, 38, 0.22);
-  border-color: rgba(248, 113, 113, 0.45);
-  color: #fca5a5;
+  background: rgba(171, 60, 60, 0.24);
+  border-color: rgba(212, 106, 106, 0.5);
+  color: #fecaca;
 }
 
 /* ==========================================================================
@@ -777,7 +791,7 @@ html, body {
   justify-content: space-between;
   gap: 16px;
   flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
 }
 
 .command-bar-left {
@@ -793,22 +807,25 @@ html, body {
   justify-content: center;
   gap: 7px;
   height: 36px;
-  padding: 0 12px;
+  padding: 0 13px;
   border-radius: 8px;
-  border: 1px solid var(--stone-200);
-  background: var(--obsidian-900);
-  color: #ffffff;
+  border: 1px solid #29384f;
+  background: linear-gradient(180deg, #243347 0%, #182334 100%);
+  color: #f8fafc;
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
   flex-shrink: 0;
-  transition: all 0.15s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 3px rgba(15, 23, 42, 0.14);
+  transition: all 0.16s ease;
 }
 
 .menu-toggle-trigger:hover {
-  background: var(--obsidian-800);
+  background: linear-gradient(180deg, #2e4059 0%, #202e42 100%);
+  border-color: var(--gold-400);
   color: var(--gold-300);
+  transform: translateY(-1px);
 }
 
 .menu-toggle-label {
@@ -823,7 +840,7 @@ html, body {
 }
 
 .cmd-proj-title {
-  font-size: 1.08rem;
+  font-size: 1.06rem;
   font-weight: 800;
   color: var(--obsidian-900);
   letter-spacing: -0.01em;
@@ -840,25 +857,25 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.72rem;
   font-weight: 700;
-  background: var(--stone-100);
-  color: var(--obsidian-700);
-  border: 1px solid var(--stone-200);
+  background: #f4f3ef;
+  color: #334155;
+  border: 1px solid #dcd8cf;
 }
 
 .cmd-meta-pill.pill-gold {
-  background: #fffbeb;
-  color: #92400e;
-  border-color: #fde68a;
+  background: #fbf7ee;
+  color: #7c581e;
+  border-color: #e6d1a7;
 }
 
 .cmd-meta-pill.pill-delivery {
-  background: #fef2f2;
-  color: #991b1b;
-  border-color: #fecaca;
+  background: #faf2f2;
+  color: #8c2d2d;
+  border-color: #e6c3c3;
 }
 
 .command-bar-right {
@@ -883,12 +900,14 @@ html, body {
   font-size: 0.72rem;
   font-weight: 700;
   background: var(--stone-50);
-  border: 1px solid var(--stone-200);
+  color: #334155;
+  border: 1px solid #dcd8cf;
 }
 
 .proj-metric-chip strong {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.79rem;
+  color: var(--obsidian-900);
 }
 
 .project-meta-actions {
@@ -933,7 +952,7 @@ html, body {
 
 /* 2A. SOL DİKEY BİNA KESİTİ / KAT ASANSÖRÜ (ELEVATION DOCK) */
 .elevation-dock {
-  background: #ffffff;
+  background: #faf9f6;
   border-right: 1px solid var(--stone-200);
   padding: 14px 12px;
   display: flex;
@@ -950,7 +969,7 @@ html, body {
 
 .elevation-title {
   display: block;
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -958,7 +977,7 @@ html, body {
 
 .elevation-subtitle {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: var(--obsidian-900);
   margin-top: 1px;
@@ -971,7 +990,7 @@ html, body {
   gap: 7px;
   position: relative;
   padding-left: 10px;
-  border-left: 2px dashed var(--stone-300);
+  border-left: 2px dashed #cbd5e1;
 }
 
 .floor-btn {
@@ -981,11 +1000,12 @@ html, body {
   width: 100%;
   padding: 10px 11px;
   border-radius: 8px;
-  border: 1px solid var(--stone-200);
-  background: var(--stone-50);
-  color: var(--obsidian-800);
+  border: 1.5px solid #d4d9e2;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f6f8 100%);
+  color: #1e293b;
   font-family: var(--font-sans);
   cursor: pointer;
+  box-shadow: inset 0 1px 0 #ffffff, 0 1px 3px rgba(15, 23, 42, 0.05);
   transition: all 0.16s ease;
   text-align: left;
   position: relative;
@@ -1000,25 +1020,27 @@ html, body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--stone-300);
+  background: #cbd5e1;
   border: 2px solid #ffffff;
 }
 
 .floor-btn:hover {
-  border-color: var(--obsidian-600);
+  border-color: #64748b;
   background: #ffffff;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
   transform: translateX(2px);
 }
 
 .floor-btn.active {
-  background: var(--obsidian-900);
-  color: #ffffff;
-  border-color: var(--obsidian-900);
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
+  background: linear-gradient(180deg, #223147 0%, #172233 100%);
+  color: #f8fafc;
+  border-color: var(--gold-400);
+  border-left: 3.5px solid var(--gold-400);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.16);
 }
 
 .floor-btn.active::before {
-  background: var(--gold-500);
+  background: var(--gold-400);
   box-shadow: 0 0 0 3px var(--gold-glow);
 }
 
@@ -1032,7 +1054,7 @@ html, body {
 .floor-btn-name {
   font-size: 0.8rem;
   font-weight: 800;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .floor-btn.active .floor-btn-name {
@@ -1043,7 +1065,7 @@ html, body {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   font-weight: 700;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .floor-btn-dots {
@@ -1079,7 +1101,7 @@ html, body {
 }
 
 .studio-toggle-row input {
-  accent-color: var(--obsidian-900);
+  accent-color: var(--obsidian-800);
   width: 14px;
   height: 14px;
 }
@@ -1089,22 +1111,24 @@ html, body {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 7px;
-  border: 1px solid var(--stone-200);
-  background: var(--stone-50);
-  color: var(--obsidian-800);
+  padding: 8px 11px;
+  border-radius: 8px;
+  border: 1.5px solid #d4d9e2;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
+  color: #1e293b;
   font-family: var(--font-sans);
   font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  box-shadow: inset 0 1px 0 #ffffff, 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: all 0.15s ease;
 }
 
 .btn-elevation-tool:hover {
-  background: var(--obsidian-900);
-  color: #ffffff;
-  border-color: var(--obsidian-900);
+  background: linear-gradient(180deg, #243347 0%, #182334 100%);
+  color: #f8fafc;
+  border-color: #243347;
+  transform: translateY(-1px);
 }
 
 /* 2B. MERKEZ MİMARİ TUVAL SÜTUNU */
@@ -1116,7 +1140,7 @@ html, body {
   max-width: 100%;
   min-height: 0;
   background:
-    radial-gradient(circle at 50% 35%, #ffffff 0%, #ece9e2 100%);
+    radial-gradient(circle at 50% 35%, #faf9f6 0%, #eae6de 100%);
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1143,8 +1167,8 @@ html, body {
   margin: 0 auto;
   overflow: hidden;
   border-radius: 12px;
-  border: 1px solid rgba(15, 23, 42, 0.14);
-  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.1), 0 4px 12px rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(30, 41, 59, 0.14);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08), 0 3px 10px rgba(15, 23, 42, 0.04);
   background: #ffffff;
   flex-shrink: 0;
 }
@@ -1156,10 +1180,10 @@ html, body {
   width: 1219px !important;
   height: 686px !important;
   margin: 0 !important;
-  background-color: #ffffff;
+  background-color: #fcfbfa;
   background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(30, 41, 59, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 41, 59, 0.028) 1px, transparent 1px);
   background-size: 24px 24px;
   border-radius: 0;
   border: none;
@@ -1191,11 +1215,11 @@ html, body {
   gap: 12px;
   padding: 7px 14px;
   border-radius: 99px;
-  background: rgba(12, 17, 29, 0.92);
+  background: rgba(22, 32, 48, 0.94);
   backdrop-filter: blur(12px);
-  color: #f8fafc;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 28px rgba(7, 10, 16, 0.25);
+  color: #f1f5f9;
+  border: 1px solid rgba(203, 213, 225, 0.18);
+  box-shadow: 0 10px 26px rgba(15, 22, 34, 0.22);
   flex-wrap: wrap;
 }
 
@@ -1230,16 +1254,16 @@ html, body {
 }
 
 .control-label {
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 0.1em;
-  color: var(--gold-400);
+  color: var(--gold-300);
 }
 
 .mode-pills {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   flex-wrap: wrap;
 }
 
@@ -1249,25 +1273,28 @@ html, body {
   gap: 6px;
   padding: 5px 11px;
   border-radius: 99px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(203, 213, 225, 0.2);
   background: rgba(255, 255, 255, 0.06);
   color: #cbd5e1;
   font-family: var(--font-sans);
   font-size: 0.73rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
 }
 
 .mode-pill:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(207, 176, 112, 0.5);
   color: #ffffff;
 }
 
 .mode-pill.active {
-  background: var(--gold-500);
-  color: var(--obsidian-950);
+  background: linear-gradient(180deg, #cfb070 0%, #b89550 100%);
+  border-color: #e4cfa1;
+  color: #111827;
   font-weight: 800;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 /* ==========================================================================
@@ -1289,24 +1316,24 @@ html, body {
   grid-template-columns: 1fr 1fr 32px;
   align-items: center;
   border-bottom: 1px solid var(--stone-200);
-  background: var(--stone-50);
+  background: #f4f3ef;
   padding: 6px;
-  gap: 4px;
+  gap: 5px;
   flex-shrink: 0;
 }
 
 .inspector-collapse-btn {
   width: 30px;
   height: 30px;
-  border-radius: 6px;
-  border: 1px solid var(--stone-200);
+  border-radius: 7px;
+  border: 1px solid #cbd5e1;
   background: #ffffff;
   color: var(--text-secondary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
 }
 
 .inspector-collapse-btn:hover {
@@ -1317,21 +1344,28 @@ html, body {
 
 .inspector-tab {
   padding: 8px 8px;
-  border-radius: 6px;
-  border: none;
+  border-radius: 7px;
+  border: 1px solid transparent;
   background: transparent;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-sans);
   font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
+}
+
+.inspector-tab:hover {
+  color: var(--obsidian-900);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .inspector-tab.active {
   background: #ffffff;
   color: var(--obsidian-900);
+  border-color: #d4d9e2;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  font-weight: 800;
 }
 
 .inspector-pane {
@@ -1343,88 +1377,88 @@ html, body {
   gap: 16px;
 }
 
-/* Seçili Daire Kimlik Kartı (Inspector) */
+/* Seçili Daire Kimlik Kartı (Inspector — Göz Yormayan Kurumsal Tonlar) */
 .inspector-unit-hero {
   border-radius: 10px;
   padding: 16px;
   color: #ffffff;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
   border: 1.5px solid transparent;
 }
 
 .inspector-unit-hero.st-SATILIK {
-  background: #ffffff;
-  color: #0f172a;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #182232;
   border-color: #94a3b8;
 }
 .inspector-unit-hero.st-KAPORA {
-  background: #d97706;
+  background: linear-gradient(135deg, #c47927 0%, #a35e14 100%);
   color: #ffffff;
-  border-color: #92400e;
+  border-color: #824a0f;
 }
 .inspector-unit-hero.st-PESINAT {
-  background: #2563eb;
+  background: linear-gradient(135deg, #326291 0%, #23496e 100%);
   color: #ffffff;
-  border-color: #1e40af;
+  border-color: #1b3857;
 }
 .inspector-unit-hero.st-SATILDI {
-  background: #dc2626;
+  background: linear-gradient(135deg, #ab3c3c 0%, #8a2929 100%);
   color: #ffffff;
-  border-color: #991b1b;
+  border-color: #6e1f1f;
 }
 .inspector-unit-hero.st-KAPALI {
   background:
     repeating-linear-gradient(
       -45deg,
-      #dc2626 0px,
-      #dc2626 14px,
-      #ffffff 14px,
-      #ffffff 28px
+      #b34242 0px,
+      #b34242 13px,
+      #f8fafc 13px,
+      #f8fafc 26px
     );
-  color: #0f172a;
-  border: 2px solid #991b1b;
-  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.78), 0 8px 20px rgba(15, 23, 42, 0.1);
+  color: #182232;
+  border: 2px solid #822727;
+  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.82), 0 6px 18px rgba(15, 23, 42, 0.08);
 }
 .inspector-unit-hero.st-KAPALI .iu-block-tag {
-  background: #0f172a;
+  background: #1e293b;
   color: #ffffff;
 }
 .inspector-unit-hero.st-KAPALI .iu-status-pill {
-  background: #dc2626;
+  background: #9e3333;
   color: #ffffff;
   border: 1.5px solid #ffffff;
-  box-shadow: 0 2px 6px rgba(153, 27, 27, 0.35);
+  box-shadow: 0 2px 5px rgba(130, 39, 39, 0.25);
 }
 .inspector-unit-hero.st-KAPALI .iu-price-box {
-  border-top-color: rgba(153, 27, 27, 0.3);
+  border-top-color: rgba(130, 39, 39, 0.25);
 }
 .inspector-unit-hero.st-SATISA_KAPALI {
   background:
     repeating-linear-gradient(
       -45deg,
-      #0f172a 0px,
-      #0f172a 14px,
-      #ffffff 14px,
-      #ffffff 28px
+      #334155 0px,
+      #334155 13px,
+      #f8fafc 13px,
+      #f8fafc 26px
     );
-  color: #0f172a;
-  border: 2px solid #0f172a;
-  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.8), 0 8px 20px rgba(15, 23, 42, 0.14);
+  color: #182232;
+  border: 2px solid #1e293b;
+  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.84), 0 6px 18px rgba(15, 23, 42, 0.1);
 }
 .inspector-unit-hero.st-SATISA_KAPALI .iu-block-tag {
-  background: #0f172a;
+  background: #1e293b;
   color: #ffffff;
 }
 .inspector-unit-hero.st-SATISA_KAPALI .iu-status-pill {
-  background: #0f172a;
+  background: #1e293b;
   color: #ffffff;
   border: 1.5px solid #ffffff;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.35);
+  box-shadow: 0 2px 5px rgba(30, 41, 59, 0.28);
 }
 .inspector-unit-hero.st-SATISA_KAPALI .iu-price-box {
-  border-top-color: rgba(15, 23, 42, 0.3);
+  border-top-color: rgba(30, 41, 59, 0.25);
 }
 
 .iu-top-row {
@@ -1440,8 +1474,8 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 3px 8px;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.22);
 }
 
 .inspector-unit-hero.st-SATILIK .iu-block-tag {
@@ -1453,20 +1487,20 @@ html, body {
 .iu-status-pill {
   font-size: 0.68rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 3px 9px;
+  letter-spacing: 0.07em;
+  padding: 3px 10px;
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.22);
 }
 
 .inspector-unit-hero.st-SATILIK .iu-status-pill {
   background: #f1f5f9;
-  color: #0f172a;
+  color: #182232;
   border: 1px solid #cbd5e1;
 }
 
 .iu-number {
-  font-size: 1.45rem;
+  font-size: 1.42rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.15;
@@ -1474,14 +1508,14 @@ html, body {
 
 .iu-sub {
   font-size: 0.8rem;
-  opacity: 0.9;
+  opacity: 0.92;
   margin-top: 2px;
 }
 
 .iu-price-box {
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -1496,12 +1530,12 @@ html, body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  opacity: 0.85;
+  opacity: 0.88;
 }
 
 .iu-price-val {
   font-family: var(--font-mono);
-  font-size: 1.25rem;
+  font-size: 1.24rem;
   font-weight: 700;
 }
 
@@ -1536,11 +1570,11 @@ html, body {
   display: block;
 }
 
-/* Inspector Durum Değiştirme Matrisi (Admin) */
+/* Inspector Durum Değiştirme Matrisi (Admin — Ergonomik ve Net Butonlar) */
 .inspector-section-title {
   font-size: 0.66rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.09em;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -1549,71 +1583,104 @@ html, body {
 .status-matrix-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 7px;
+  gap: 8px;
 }
 
 .btn-status-matrix {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 11px;
+  padding: 10px 12px;
   border-radius: 8px;
-  border: 1.5px solid var(--stone-200);
-  background: #ffffff;
-  color: var(--obsidian-900);
+  border: 1.5px solid #d4d9e2;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #1e293b;
   font-family: var(--font-sans);
   font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  box-shadow: inset 0 1px 0 #ffffff, 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: all 0.15s ease;
+  text-align: left;
 }
 
 .btn-status-matrix:hover {
-  border-color: var(--obsidian-700);
+  border-color: #64748b;
+  background: #ffffff;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
   transform: translateY(-1px);
 }
 
+.btn-status-matrix.active-SATILIK,
+.btn-status-matrix.active-KAPORA,
+.btn-status-matrix.active-PESINAT,
+.btn-status-matrix.active-SATILDI,
+.btn-status-matrix.active-KAPALI,
+.btn-status-matrix.active-SATISA_KAPALI {
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+}
+
+.btn-status-matrix.active-SATILIK::after,
+.btn-status-matrix.active-KAPORA::after,
+.btn-status-matrix.active-PESINAT::after,
+.btn-status-matrix.active-SATILDI::after,
+.btn-status-matrix.active-KAPALI::after,
+.btn-status-matrix.active-SATISA_KAPALI::after {
+  content: "✓";
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
 .btn-status-matrix.active-SATILIK {
-  background: var(--st-satilik-soft);
-  border-color: var(--st-satilik);
-  color: var(--st-satilik);
+  background: #f1f5f9;
+  border-color: #475569;
+  border-left: 4px solid #475569;
+  color: #0f172a;
 }
 .btn-status-matrix.active-KAPORA {
   background: var(--st-kapora-soft);
   border-color: var(--st-kapora);
-  color: var(--st-kapora);
+  border-left: 4px solid var(--st-kapora);
+  color: #8c4f0e;
 }
 .btn-status-matrix.active-PESINAT {
   background: var(--st-pesinat-soft);
   border-color: var(--st-pesinat);
-  color: var(--st-pesinat);
+  border-left: 4px solid var(--st-pesinat);
+  color: #1f4469;
 }
 .btn-status-matrix.active-SATILDI {
   background: var(--st-satildi-soft);
   border-color: var(--st-satildi);
-  color: var(--st-satildi);
+  border-left: 4px solid var(--st-satildi);
+  color: #822424;
 }
 .btn-status-matrix.active-KAPALI {
   background: repeating-linear-gradient(
     -45deg,
-    #fee2e2 0px,
-    #fee2e2 8px,
+    #f9e6e6 0px,
+    #f9e6e6 8px,
     #ffffff 8px,
     #ffffff 16px
   );
-  border-color: #dc2626;
-  color: #991b1b;
+  border-color: #9e3333;
+  border-left: 4px solid #9e3333;
+  color: #7f2323;
 }
 .btn-status-matrix.active-SATISA_KAPALI {
   background: repeating-linear-gradient(
     -45deg,
-    #cbd5e1 0px,
-    #cbd5e1 8px,
+    #e2e8f0 0px,
+    #e2e8f0 8px,
     #ffffff 8px,
     #ffffff 16px
   );
-  border-color: #0f172a;
-  color: #0f172a;
+  border-color: #334155;
+  border-left: 4px solid #1e293b;
+  color: #1e293b;
 }
 
 /* Inspector İçi Hızlı Düzenleme & Talep Formu */
@@ -1621,7 +1688,7 @@ html, body {
   background: var(--stone-50);
   border: 1px solid var(--stone-200);
   border-radius: 10px;
-  padding: 12px;
+  padding: 13px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1654,22 +1721,24 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
+  padding: 9px 11px;
   border-radius: 8px;
-  border: 1px solid var(--stone-200);
-  background: var(--stone-50);
+  border: 1px solid #d8dce3;
+  background: #faf9f6;
   cursor: pointer;
-  transition: all 0.14s;
+  transition: all 0.15s ease;
 }
 
 .ins-unit-row:hover {
-  border-color: var(--obsidian-600);
+  border-color: #64748b;
   background: #ffffff;
+  transform: translateX(2px);
 }
 
 .ins-unit-row.selected {
   border-color: var(--gold-500);
-  background: #fffbeb;
+  border-left: 3.5px solid var(--gold-500);
+  background: #fbf8f1;
 }
 
 .ins-unit-left {
@@ -1697,7 +1766,7 @@ html, body {
 }
 
 /* ==========================================================================
-   KAT PLANI İÇİ MİMARİ ELEMANLAR (.fp-*)
+   KAT PLANI İÇİ MİMARİ ELEMANLAR (.fp-* — Göz Yormayan Uyumlu Kartlar)
    ========================================================================== */
 .fp-el {
   position: absolute;
@@ -1710,8 +1779,8 @@ html, body {
 
 .fp-apt {
   position: absolute;
-  border: 1.5px solid rgba(15, 23, 42, 0.25);
-  border-radius: 6px;
+  border: 1.5px solid rgba(30, 41, 59, 0.28);
+  border-radius: 7px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1722,18 +1791,18 @@ html, body {
   transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s ease, border-color 0.16s ease;
   z-index: 10;
   overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 2px 5px rgba(15, 23, 42, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 5px rgba(15, 23, 42, 0.07);
 }
 
 .fp-apt:hover {
-  transform: scale(1.025);
+  transform: scale(1.022);
   z-index: 30;
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.22), 0 0 0 2px var(--obsidian-900);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18), 0 0 0 2px var(--obsidian-800);
 }
 
 .fp-apt.selected-apt {
   z-index: 32;
-  box-shadow: 0 0 0 3px var(--gold-500), 0 14px 28px rgba(15, 23, 42, 0.28) !important;
+  box-shadow: 0 0 0 3px var(--gold-400), 0 12px 24px rgba(15, 23, 42, 0.22) !important;
 }
 
 /* Daire Sağ Üst Üç Nokta (⋯) Butonu */
@@ -1743,9 +1812,9 @@ html, body {
   right: 5px;
   width: 24px;
   height: 24px;
-  border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(15, 23, 42, 0.55);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(22, 32, 48, 0.52);
   backdrop-filter: blur(4px);
   color: #ffffff;
   font-size: 0.95rem;
@@ -1764,7 +1833,7 @@ html, body {
   background: var(--obsidian-900);
   border-color: var(--gold-400);
   color: var(--gold-300);
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .fp-apt.compact-apt .fp-apt-more-btn {
@@ -1775,18 +1844,18 @@ html, body {
   font-size: 0.75rem;
 }
 
-/* Durum Renk Sınıfları (Tüm Projelerde Tek Tip — Satılık Düz Beyaz/Renksiz) */
+/* Durum Renk Sınıfları (Matlaştırılmış, Göz Yormayan, Uyumlu Mimari Renkler) */
 .fp-apt.status-SATILIK,
 .fp-apt.status-SATILIK.white-style {
-  background: #ffffff;
-  color: #0f172a;
-  border: 1.5px solid #475569;
-  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #182232;
+  border: 1.5px solid #64748b;
+  box-shadow: inset 0 1px 0 #ffffff, 0 2px 5px rgba(15, 23, 42, 0.05);
 }
 
 .fp-apt.status-SATILIK .fp-apt-more-btn {
   background: #f1f5f9;
-  color: #0f172a;
+  color: #1e293b;
   border-color: #cbd5e1;
 }
 
@@ -1797,55 +1866,55 @@ html, body {
 }
 
 .fp-apt.status-KAPORA {
-  background: #d97706;
+  background: linear-gradient(180deg, #c47927 0%, #a86216 100%);
   color: #ffffff;
-  border: 1.5px solid #92400e;
+  border: 1.5px solid #824a0f;
 }
 
 .fp-apt.status-PESINAT {
-  background: #2563eb;
+  background: linear-gradient(180deg, #326291 0%, #254d75 100%);
   color: #ffffff;
-  border: 1.5px solid #1e40af;
+  border: 1.5px solid #1b3b5c;
 }
 
 .fp-apt.status-SATILDI {
-  background: #dc2626;
+  background: linear-gradient(180deg, #ab3c3c 0%, #8e2c2c 100%);
   color: #ffffff;
-  border: 1.5px solid #991b1b;
+  border: 1.5px solid #6e2020;
 }
 
-/* KAPALI Daireler: Kırmızı - Beyaz Çizgili Görünüm */
+/* KAPALI Daireler: Yumuşatılmış Kiremit-Kırmızı & Kırık Beyaz Çizgili Görünüm */
 .fp-apt.status-KAPALI {
   background: repeating-linear-gradient(
     -45deg,
-    #dc2626 0px,
-    #dc2626 11px,
-    #ffffff 11px,
-    #ffffff 22px
+    #b34242 0px,
+    #b34242 11px,
+    #f8fafc 11px,
+    #f8fafc 22px
   );
-  color: #0f172a;
-  border: 2px solid #991b1b;
+  color: #182232;
+  border: 2px solid #822727;
 }
 
 .fp-apt.status-KAPALI .apt-block-label,
 .fp-apt.status-KAPALI .apt-number,
 .fp-apt.status-KAPALI .apt-rooms {
   background: rgba(255, 255, 255, 0.94);
-  color: #0f172a;
+  color: #182232;
   padding: 1px 6px;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.16);
 }
 
 .fp-apt.status-KAPALI .apt-status-stamp {
-  background: #991b1b;
+  background: #8f2d2d;
   color: #ffffff;
   border: 1.5px solid #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.25);
 }
 
 .fp-apt.status-KAPALI .apt-price {
-  background: #0f172a;
+  background: #1e293b;
   color: #ffffff;
   border: 1px solid #ffffff;
 }
@@ -1856,38 +1925,38 @@ html, body {
   border-radius: 2px;
 }
 
-/* SATIŞA KAPALI Daireler: Siyah - Beyaz Çizgili Görünüm */
+/* SATIŞA KAPALI Daireler: Yumuşatılmış Antrasit & Kırık Beyaz Çizgili Görünüm */
 .fp-apt.status-SATISA_KAPALI {
   background: repeating-linear-gradient(
     -45deg,
-    #0f172a 0px,
-    #0f172a 11px,
-    #ffffff 11px,
-    #ffffff 22px
+    #334155 0px,
+    #334155 11px,
+    #f8fafc 11px,
+    #f8fafc 22px
   );
-  color: #0f172a;
-  border: 2px solid #0f172a;
+  color: #182232;
+  border: 2px solid #1e293b;
 }
 
 .fp-apt.status-SATISA_KAPALI .apt-block-label,
 .fp-apt.status-SATISA_KAPALI .apt-number,
 .fp-apt.status-SATISA_KAPALI .apt-rooms {
   background: rgba(255, 255, 255, 0.95);
-  color: #0f172a;
+  color: #182232;
   padding: 1px 6px;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
 }
 
 .fp-apt.status-SATISA_KAPALI .apt-status-stamp {
-  background: #0f172a;
+  background: #1e293b;
   color: #ffffff;
   border: 1.5px solid #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.28);
 }
 
 .fp-apt.status-SATISA_KAPALI .apt-price {
-  background: #0f172a;
+  background: #1e293b;
   color: #ffffff;
   border: 1px solid #ffffff;
 }
@@ -1901,7 +1970,7 @@ html, body {
 .fp-apt .apt-block-label {
   font-size: 0.66rem;
   font-weight: 700;
-  opacity: 0.88;
+  opacity: 0.9;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: 1px;
@@ -1926,7 +1995,7 @@ html, body {
   font-size: 0.85rem;
   font-weight: 700;
   margin-top: 4px;
-  background: rgba(0, 0, 0, 0.24);
+  background: rgba(0, 0, 0, 0.22);
   color: #ffffff;
   padding: 2px 8px;
   border-radius: 4px;
@@ -1936,7 +2005,7 @@ html, body {
 .fp-apt.status-SATILIK .apt-price,
 .fp-apt.status-SATILIK.white-style .apt-price {
   background: #f1f5f9;
-  color: #0f172a;
+  color: #182232;
   border: 1px solid #cbd5e1;
 }
 
@@ -1946,16 +2015,16 @@ html, body {
   font-weight: 800;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.32);
+  background: rgba(0, 0, 0, 0.28);
   color: #ffffff;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 .fp-apt.status-SATILIK .apt-status-stamp,
 .fp-apt.status-SATILIK.white-style .apt-status-stamp {
   background: #f1f5f9;
-  color: #0f172a;
+  color: #182232;
   border: 1px solid #cbd5e1;
 }
 
@@ -1979,26 +2048,26 @@ html, body {
 .fp-apt.med-apt .apt-price { font-size: 0.72rem; margin-top: 2px; padding: 1px 6px; }
 .fp-apt.med-apt .apt-status-stamp { font-size: 0.6rem; margin-top: 2px; padding: 1px 6px; }
 
-/* Havuz, Balkon, Pusula */
+/* Havuz, Balkon, Pusula (Mat Mineral Mavi Havuz) */
 .fp-pool {
   position: absolute;
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-  border: 2px solid #075985;
-  color: #ffffff;
+  background: linear-gradient(135deg, #3b7696 0%, #2c5c78 100%);
+  border: 2px solid #224961;
+  color: #f8fafc;
   font-weight: 800;
-  font-size: 1.35rem;
-  letter-spacing: 0.16em;
+  font-size: 1.32rem;
+  letter-spacing: 0.15em;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  box-shadow: inset 0 2px 12px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(2, 132, 199, 0.18);
+  box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(44, 92, 120, 0.16);
 }
 
 .fp-balcony {
   position: absolute;
   background: #f8fafc;
-  border: 1.5px solid #475569;
+  border: 1.5px solid #64748b;
   color: #334155;
   font-size: 0.58rem;
   font-weight: 800;
@@ -2023,7 +2092,7 @@ html, body {
   position: absolute;
   font-size: 0.75rem;
   font-weight: 800;
-  color: #991b1b;
+  color: #8c2d2d;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -2104,7 +2173,7 @@ html, body {
 .filter-item select,
 .filter-item input {
   padding: 8px 11px;
-  border: 1px solid var(--stone-200);
+  border: 1.5px solid #d4d9e2;
   border-radius: 7px;
   font-family: var(--font-sans);
   font-size: 0.82rem;
@@ -2112,12 +2181,14 @@ html, body {
   color: var(--text-main);
   background: var(--stone-50);
   outline: none;
+  transition: all 0.15s ease;
 }
 
 .filter-item select:focus,
 .filter-item input:focus {
-  border-color: var(--obsidian-900);
+  border-color: var(--obsidian-700);
   background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(41, 56, 79, 0.1);
 }
 
 .summary-table-card {
@@ -2151,7 +2222,7 @@ html, body {
 .badge {
   font-family: var(--font-mono);
   background: var(--obsidian-900);
-  color: var(--gold-400);
+  color: var(--gold-300);
   padding: 2px 9px;
   border-radius: 99px;
   font-size: 0.72rem;
@@ -2197,39 +2268,45 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 5px 10px;
   border-radius: 6px;
   font-size: 0.71rem;
   font-weight: 800;
   cursor: pointer;
   letter-spacing: 0.03em;
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.status-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.08);
 }
 
 .status-badge.SATILIK { background: var(--st-satilik-soft); color: var(--st-satilik); border: 1px solid var(--st-satilik-border); }
-.status-badge.KAPORA  { background: var(--st-kapora-soft);  color: var(--st-kapora);  border: 1px solid var(--st-kapora-border); }
-.status-badge.PESINAT { background: var(--st-pesinat-soft); color: var(--st-pesinat); border: 1px solid var(--st-pesinat-border); }
-.status-badge.SATILDI { background: var(--st-satildi-soft); color: var(--st-satildi); border: 1px solid var(--st-satildi-border); }
+.status-badge.KAPORA  { background: var(--st-kapora-soft);  color: #8c4f0e;  border: 1px solid var(--st-kapora-border); }
+.status-badge.PESINAT { background: var(--st-pesinat-soft); color: #1f4469; border: 1px solid var(--st-pesinat-border); }
+.status-badge.SATILDI { background: var(--st-satildi-soft); color: #822424; border: 1px solid var(--st-satildi-border); }
 .status-badge.KAPALI  {
   background: repeating-linear-gradient(
     -45deg,
-    #fee2e2 0px,
-    #fee2e2 6px,
+    #f9e6e6 0px,
+    #f9e6e6 6px,
     #ffffff 6px,
     #ffffff 12px
   );
-  color: #991b1b;
-  border: 1px solid #f87171;
+  color: #7f2323;
+  border: 1px solid #d48a8a;
 }
 .status-badge.SATISA_KAPALI {
   background: repeating-linear-gradient(
     -45deg,
-    #cbd5e1 0px,
-    #cbd5e1 6px,
+    #e2e8f0 0px,
+    #e2e8f0 6px,
     #ffffff 6px,
     #ffffff 12px
   );
-  color: #0f172a;
-  border: 1px solid #475569;
+  color: #1e293b;
+  border: 1px solid #64748b;
 }
 
 /* Son İşlem Kayıtları */
@@ -2244,7 +2321,7 @@ html, body {
   border-radius: 8px;
   background: var(--stone-50);
   border: 1px solid var(--stone-200);
-  border-left: 3px solid var(--obsidian-900);
+  border-left: 3px solid var(--obsidian-800);
   font-size: 0.76rem;
 }
 
@@ -2256,7 +2333,7 @@ html, body {
 }
 
 /* ==========================================================================
-   GENEL BUTONLAR VE MODALLAR
+   GENEL BUTONLAR VE MODALLAR (Ergonomik, Net Çerçeveli ve Profesyonel)
    ========================================================================== */
 .btn {
   display: inline-flex;
@@ -2264,54 +2341,94 @@ html, body {
   justify-content: center;
   gap: 6px;
   padding: 8px 14px;
-  border-radius: 7px;
+  border-radius: 8px;
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 0.78rem;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 1.5px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 1px 2px rgba(15, 23, 42, 0.08);
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 
+.btn:active {
+  transform: translateY(0) !important;
+}
+
 .btn-sm {
-  padding: 6px 11px;
+  padding: 6px 12px;
   font-size: 0.74rem;
+  border-radius: 7px;
 }
 
 .btn-primary {
-  background: var(--obsidian-900);
-  color: #ffffff;
+  background: linear-gradient(180deg, #243347 0%, #172232 100%);
+  border-color: #2e4059;
+  color: #f8fafc;
 }
 .btn-primary:hover {
-  background: var(--obsidian-800);
+  background: linear-gradient(180deg, #2e4059 0%, #1e2c40 100%);
+  border-color: var(--gold-400);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.14);
 }
 
 .btn-ghost {
-  background: #ffffff;
-  color: var(--text-main);
-  border-color: var(--stone-200);
+  background: linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
+  color: #1e293b;
+  border-color: #cbd5e1;
+  box-shadow: inset 0 1px 0 #ffffff, 0 1px 2px rgba(15, 23, 42, 0.05);
 }
 .btn-ghost:hover {
-  background: var(--stone-50);
-  border-color: var(--stone-300);
+  background: #ffffff;
+  border-color: #64748b;
+  color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
+}
+
+.btn-gold {
+  background: linear-gradient(180deg, #cfb070 0%, #b89550 100%);
+  color: #111827;
+  border-color: #a3803e;
+  font-weight: 800;
+}
+.btn-gold:hover {
+  background: linear-gradient(180deg, #d8bc82 0%, #c4a15b 100%);
+  border-color: #8f6e2f;
+  color: #090d16;
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background: linear-gradient(180deg, #3b8764 0%, #2d6e50 100%);
+  color: #ffffff;
+  border-color: #245840;
+}
+.btn-success:hover {
+  background: linear-gradient(180deg, #449670 0%, #347c5b 100%);
+  transform: translateY(-1px);
 }
 
 .btn-danger-outline {
-  background: #ffffff;
-  color: #b91c1c;
-  border-color: #fecaca;
+  background: linear-gradient(180deg, #ffffff 0%, #fcf4f4 100%);
+  color: #9e3333;
+  border-color: #e2b4b4;
 }
 .btn-danger-outline:hover {
-  background: #fef2f2;
-  border-color: #f87171;
+  background: #faebeb;
+  border-color: #b84a4a;
+  color: #7f2323;
+  transform: translateY(-1px);
 }
 
 /* Modallar */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(7, 10, 16, 0.68);
+  background: rgba(15, 22, 34, 0.62);
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -2330,7 +2447,7 @@ html, body {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--stone-200);
-  box-shadow: 0 25px 50px -12px rgba(7, 10, 16, 0.45);
+  box-shadow: 0 24px 48px -12px rgba(15, 22, 34, 0.38);
   overflow: hidden;
   margin: auto;
 }
@@ -2342,8 +2459,8 @@ html, body {
 
 .modal-header {
   padding: 13px 18px;
-  background: var(--obsidian-900);
-  color: #ffffff;
+  background: linear-gradient(180deg, #1c283a 0%, #151f2e 100%);
+  color: #f8fafc;
   border-bottom: 2px solid var(--gold-500);
   display: flex;
   justify-content: space-between;
@@ -2362,8 +2479,8 @@ html, body {
 }
 
 .modal-close {
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(203, 213, 225, 0.25);
   min-width: 34px;
   height: 34px;
   padding: 0 10px;
@@ -2372,7 +2489,7 @@ html, body {
   font-weight: 800;
   font-family: var(--font-sans);
   cursor: pointer;
-  color: #ffffff;
+  color: #f1f5f9;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2382,8 +2499,8 @@ html, body {
 }
 
 .modal-close:hover {
-  background: #dc2626;
-  border-color: #ef4444;
+  background: #ab3c3c;
+  border-color: #c95656;
   color: #ffffff;
 }
 
@@ -2437,18 +2554,20 @@ html, body {
 .form-group input,
 .form-group select {
   padding: 9px 12px;
-  border: 1px solid var(--stone-200);
+  border: 1.5px solid #d4d9e2;
   border-radius: 7px;
   font-family: var(--font-sans);
   font-size: 0.86rem;
   font-weight: 600;
   color: var(--text-main);
   outline: none;
+  transition: all 0.15s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
-  border-color: var(--obsidian-900);
+  border-color: var(--obsidian-700);
+  box-shadow: 0 0 0 2px rgba(41, 56, 79, 0.1);
 }
 
 .modal-footer {
@@ -2466,14 +2585,14 @@ html, body {
 }
 
 .network-status-banner {
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
+  background: #f2f8f5;
+  border: 1px solid #b8dccb;
   padding: 13px 15px;
   border-radius: 8px;
   margin-bottom: 14px;
 }
-.network-status-banner strong { color: #065f46; font-size: 0.86rem; }
-.network-status-banner p { font-size: 0.78rem; color: #047857; margin-top: 3px; }
+.network-status-banner strong { color: #1f573f; font-size: 0.86rem; }
+.network-status-banner p { font-size: 0.78rem; color: #2d6e50; margin-top: 3px; }
 
 .lan-urls-list {
   display: flex;
@@ -2482,12 +2601,15 @@ html, body {
   margin: 10px 0 18px;
 }
 
-.lan-url-item {
+.lan-url-item,
+.lan-url-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
   background: var(--stone-50);
-  border: 1px solid var(--stone-200);
+  border: 1px solid #d4d9e2;
   padding: 10px 14px;
   border-radius: 8px;
   font-family: var(--font-mono);
@@ -2520,14 +2642,14 @@ html, body {
 
 .toast {
   background: var(--obsidian-900);
-  color: #ffffff;
+  color: #f8fafc;
   padding: 12px 16px;
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 600;
-  box-shadow: 0 14px 28px rgba(7, 10, 16, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-left: 4px solid var(--gold-500);
+  box-shadow: 0 12px 26px rgba(15, 22, 34, 0.3);
+  border: 1px solid rgba(203, 213, 225, 0.14);
+  border-left: 4px solid var(--gold-400);
 }
 
 /* ==========================================================================
@@ -2540,10 +2662,11 @@ html, body {
   gap: 10px;
   margin-bottom: 10px;
   padding: 6px 10px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
-  border: 1px solid var(--stone-200);
+  border: 1px solid #d4d9e2;
   border-radius: 9px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   flex-shrink: 0;
 }
 
@@ -2551,20 +2674,20 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: var(--stone-100);
+  background: #eef0f4;
   padding: 3px;
-  border-radius: 7px;
-  border: 1px solid var(--stone-200);
+  border-radius: 8px;
+  border: 1px solid #d4d9e2;
 }
 
 .btn-zoom {
   height: 28px;
   min-width: 28px;
-  padding: 0 8px;
-  border-radius: 5px;
-  border: none;
-  background: #ffffff;
-  color: var(--obsidian-900);
+  padding: 0 9px;
+  border-radius: 6px;
+  border: 1px solid #d4d9e2;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #1e293b;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
@@ -2572,17 +2695,18 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
-  transition: all 0.14s;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: all 0.14s ease;
 }
 
 .btn-zoom:hover {
-  background: var(--obsidian-900);
+  background: linear-gradient(180deg, #243347 0%, #182334 100%);
+  border-color: #243347;
   color: #ffffff;
 }
 
 .btn-zoom-label {
-  min-width: 62px;
+  min-width: 66px;
   font-family: var(--font-sans);
 }
 
@@ -2597,23 +2721,30 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 11px;
-  border-radius: 7px;
-  border: 1px solid var(--stone-200);
-  background: #ffffff;
-  color: var(--obsidian-900);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #cbd5e1;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
+  color: #1e293b;
   font-family: var(--font-sans);
   font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  box-shadow: inset 0 1px 0 #ffffff, 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: all 0.15s ease;
 }
 
-.btn-mobile-cards-toggle.active,
 .btn-mobile-cards-toggle:hover {
-  background: var(--obsidian-900);
+  border-color: #64748b;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-mobile-cards-toggle.active {
+  background: linear-gradient(180deg, #243347 0%, #182334 100%);
   color: var(--gold-300);
-  border-color: var(--obsidian-900);
+  border-color: #243347;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 5px rgba(15, 23, 42, 0.14);
 }
 
 /* Mobil / Hızlı Daire Kartları Grid Görünümü */
@@ -2633,10 +2764,10 @@ html, body {
   justify-content: space-between;
   gap: 6px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.09);
   border: 1.5px solid rgba(255, 255, 255, 0.2);
   position: relative;
-  transition: transform 0.14s ease;
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
 }
 
 .mob-unit-card:active {
@@ -2644,68 +2775,68 @@ html, body {
 }
 
 .mob-unit-card.st-SATILIK {
-  background: #ffffff;
-  color: #0f172a;
-  border: 1.5px solid #475569;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #182232;
+  border: 1.5px solid #64748b;
 }
 .mob-unit-card.st-KAPORA {
-  background: #d97706;
+  background: linear-gradient(180deg, #c47927 0%, #a86216 100%);
   color: #ffffff;
-  border: 1.5px solid #92400e;
+  border: 1.5px solid #824a0f;
 }
 .mob-unit-card.st-PESINAT {
-  background: #2563eb;
+  background: linear-gradient(180deg, #326291 0%, #254d75 100%);
   color: #ffffff;
-  border: 1.5px solid #1e40af;
+  border: 1.5px solid #1b3b5c;
 }
 .mob-unit-card.st-SATILDI {
-  background: #dc2626;
+  background: linear-gradient(180deg, #ab3c3c 0%, #8e2c2c 100%);
   color: #ffffff;
-  border: 1.5px solid #991b1b;
+  border: 1.5px solid #6e2020;
 }
 .mob-unit-card.st-KAPALI {
   background: repeating-linear-gradient(
     -45deg,
-    #dc2626 0px,
-    #dc2626 11px,
-    #ffffff 11px,
-    #ffffff 22px
+    #b34242 0px,
+    #b34242 11px,
+    #f8fafc 11px,
+    #f8fafc 22px
   );
-  color: #0f172a;
-  border: 2px solid #991b1b;
+  color: #182232;
+  border: 2px solid #822727;
 }
 .mob-unit-card.st-KAPALI .mob-unit-card-top,
 .mob-unit-card.st-KAPALI .mob-unit-card-num {
   background: rgba(255, 255, 255, 0.94);
-  color: #0f172a;
+  color: #182232;
   padding: 2px 6px;
   border-radius: 4px;
 }
 .mob-unit-card.st-KAPALI .mob-unit-card-price {
-  background: #991b1b;
+  background: #8f2d2d;
   color: #ffffff;
   border: 1.5px solid #ffffff;
 }
 .mob-unit-card.st-SATISA_KAPALI {
   background: repeating-linear-gradient(
     -45deg,
-    #0f172a 0px,
-    #0f172a 11px,
-    #ffffff 11px,
-    #ffffff 22px
+    #334155 0px,
+    #334155 11px,
+    #f8fafc 11px,
+    #f8fafc 22px
   );
-  color: #0f172a;
-  border: 2px solid #0f172a;
+  color: #182232;
+  border: 2px solid #1e293b;
 }
 .mob-unit-card.st-SATISA_KAPALI .mob-unit-card-top,
 .mob-unit-card.st-SATISA_KAPALI .mob-unit-card-num {
   background: rgba(255, 255, 255, 0.95);
-  color: #0f172a;
+  color: #182232;
   padding: 2px 6px;
   border-radius: 4px;
 }
 .mob-unit-card.st-SATISA_KAPALI .mob-unit-card-price {
-  background: #0f172a;
+  background: #1e293b;
   color: #ffffff;
   border: 1.5px solid #ffffff;
 }
@@ -2730,7 +2861,7 @@ html, body {
   font-family: var(--font-mono);
   font-size: 0.86rem;
   font-weight: 700;
-  background: rgba(0, 0, 0, 0.24);
+  background: rgba(0, 0, 0, 0.22);
   padding: 4px 8px;
   border-radius: 6px;
   text-align: center;
@@ -2738,7 +2869,7 @@ html, body {
 
 .mob-unit-card.st-SATILIK .mob-unit-card-price {
   background: #f1f5f9;
-  color: #0f172a;
+  color: #182232;
   border: 1px solid #cbd5e1;
 }
 

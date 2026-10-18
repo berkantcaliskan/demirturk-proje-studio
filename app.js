@@ -908,27 +908,27 @@ function renderKpiStrip() {
       </div>
       <div class="telemetry-grid">
         <div class="t-stat">
-          <span class="t-stat-val" style="color:#4ade80;">${satilik}</span>
+          <span class="t-stat-val" style="color:#7dd3ab;">${satilik}</span>
           <span class="t-stat-lbl">Satılık</span>
         </div>
         <div class="t-stat">
-          <span class="t-stat-val" style="color:#fbbf24;">${kapora}</span>
+          <span class="t-stat-val" style="color:#e9b672;">${kapora}</span>
           <span class="t-stat-lbl">Kapora</span>
         </div>
         <div class="t-stat">
-          <span class="t-stat-val" style="color:#60a5fa;">${pesinat}</span>
+          <span class="t-stat-val" style="color:#8ab4e1;">${pesinat}</span>
           <span class="t-stat-lbl">Peşinat</span>
         </div>
         <div class="t-stat">
-          <span class="t-stat-val" style="color:#f87171;">${satildi}</span>
+          <span class="t-stat-val" style="color:#e28d8d;">${satildi}</span>
           <span class="t-stat-lbl">Satıldı</span>
         </div>
         <div class="t-stat">
-          <span class="t-stat-val" style="color:#fca5a5;">${kapali}</span>
+          <span class="t-stat-val" style="color:#d8a4a4;">${kapali}</span>
           <span class="t-stat-lbl">Kapalı</span>
         </div>
         <div class="t-stat">
-          <span class="t-stat-val" style="color:#e2e8f0;">${satisaKapali}</span>
+          <span class="t-stat-val" style="color:#cbd5e1;">${satisaKapali}</span>
           <span class="t-stat-lbl">Satışa K.</span>
         </div>
       </div>
@@ -1077,11 +1077,11 @@ function renderFloorTabs() {
 
       const dotStyles = {
         SATILIK: "background:#ffffff;border:1px solid #64748b;",
-        KAPORA: "background:#d97706;",
-        PESINAT: "background:#2563eb;",
-        SATILDI: "background:#dc2626;",
-        KAPALI: "background:repeating-linear-gradient(-45deg,#dc2626 0 2px,#ffffff 2px 4px);border:1px solid #991b1b;",
-        SATISA_KAPALI: "background:repeating-linear-gradient(-45deg,#0f172a 0 2px,#ffffff 2px 4px);border:1px solid #0f172a;"
+        KAPORA: "background:#c47927;",
+        PESINAT: "background:#326291;",
+        SATILDI: "background:#ab3c3c;",
+        KAPALI: "background:repeating-linear-gradient(-45deg,#b34242 0 2px,#f8fafc 2px 4px);border:1px solid #822727;",
+        SATISA_KAPALI: "background:repeating-linear-gradient(-45deg,#334155 0 2px,#f8fafc 2px 4px);border:1px solid #1e293b;"
       };
       const dotsHTML = fl.apartments
         .slice(0, 18)
@@ -3285,34 +3285,34 @@ function renderNetworkModalContent() {
 
   // 1. BÖLÜM: 7/24 KESİNTİSİZ SABİT MOBİL & İNTERNET WEB STÜDYOSU (CLOUDFLARE'SİZ, ASLA DEĞİŞMEYEN ADRES)
   const permanentCloudMobileHTML = `
-    <div style="background:linear-gradient(135deg,#052e16 0%,#064e3b 100%);color:#f8fafc;border:2px solid #22c55e;border-radius:12px;padding:15px 16px;margin-bottom:14px;box-shadow:0 10px 26px rgba(5,46,22,0.22);">
+    <div style="background:linear-gradient(135deg,#182436 0%,#1f3347 100%);color:#f1f5f9;border:1.5px solid #469c76;border-radius:12px;padding:15px 16px;margin-bottom:14px;box-shadow:0 8px 22px rgba(15,22,34,0.16);">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80;"></span>
-          <span style="font-size:0.8rem;font-weight:800;letter-spacing:0.06em;color:#bbf7d0;text-transform:uppercase;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#5bb38b;box-shadow:0 0 0 3px rgba(91,179,139,0.22);"></span>
+          <span style="font-size:0.79rem;font-weight:800;letter-spacing:0.05em;color:#d1fae5;text-transform:uppercase;">
             1. 7/24 KESİNTİSİZ MOBİL &amp; İNTERNET ERİŞİMİ (ASLA DEĞİŞMEYEN SABİT LİNK &amp; QR)
           </span>
         </div>
-        <span style="background:#22c55e;color:#052e16;font-size:0.68rem;font-weight:900;padding:3px 10px;border-radius:99px;">
-          ★ ÖNERİLEN — CLOUDFLARE BAĞIMSIZ &amp; ÖMÜR BOYU SABİT
+        <span style="background:rgba(91,179,139,0.2);color:#a7f3d0;border:1px solid rgba(91,179,139,0.45);font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:99px;">
+          ★ ÖNERİLEN — CLOUDFLARE BAĞIMSIZ &amp; SABİT
         </span>
       </div>
 
       <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        <img src="${permanentQrApi}" alt="Sabit Mobil QR Kod" style="width:108px;height:108px;border-radius:10px;border:3px solid #4ade80;background:#fff;padding:5px;flex-shrink:0;" />
+        <img src="${permanentQrApi}" alt="Sabit Mobil QR Kod" style="width:108px;height:108px;border-radius:10px;border:2px solid #5bb38b;background:#fff;padding:5px;flex-shrink:0;" />
         <div style="flex:1;min-width:220px;">
-          <div style="font-size:0.78rem;color:#dcfce7;margin-bottom:8px;line-height:1.45;">
-            <strong>Cloudflare ücretsiz sürüm kopmalarını tamamen ortadan kaldırır!</strong> Bu adres ve QR kod <strong>hiçbir zaman değişmez</strong>. Telefonunuzdan (4.5G/5G veya herhangi bir Wi-Fi ile) 7/24 anında açılır ve ofis bilgisayarlarıyla canlı senkronize çalışır:
+          <div style="font-size:0.78rem;color:#cbd5e1;margin-bottom:8px;line-height:1.45;">
+            <strong style="color:#f8fafc;">Cloudflare ücretsiz sürüm kopmalarını tamamen ortadan kaldırır!</strong> Bu adres ve QR kod <strong>hiçbir zaman değişmez</strong>. Telefonunuzdan (4.5G/5G veya herhangi bir Wi-Fi ile) 7/24 anında açılır ve ofis bilgisayarlarıyla canlı senkronize çalışır:
           </div>
-          <div class="lan-url-box" style="background:rgba(0,0,0,0.4);border:1.5px solid #4ade80;margin-bottom:8px;">
-            <span style="word-break:break-all;color:#86efac;font-weight:800;font-size:0.86rem;">${permanentUrl}</span>
+          <div class="lan-url-box" style="background:rgba(15,22,34,0.55);border:1px solid rgba(91,179,139,0.45);margin-bottom:8px;">
+            <span style="word-break:break-all;color:#a7f3d0;font-weight:700;font-size:0.84rem;">${permanentUrl}</span>
             <div style="display:flex;gap:6px;flex-shrink:0;">
-              <button type="button" class="btn btn-sm" style="background:#22c55e;color:#052e16;font-weight:800;" onclick="navigator.clipboard.writeText('${permanentUrl}'); showToast('Sabit mobil erişim adresi kopyalandı!')">Kopyala</button>
-              <a href="https://wa.me/?text=${permanentWaText}" target="_blank" rel="noopener" class="btn btn-sm" style="background:#16a34a;color:#fff;font-weight:700;text-decoration:none;">WhatsApp</a>
+              <button type="button" class="btn btn-sm btn-gold" onclick="navigator.clipboard.writeText('${permanentUrl}'); showToast('Sabit mobil erişim adresi kopyalandı!')">Kopyala</button>
+              <a href="https://wa.me/?text=${permanentWaText}" target="_blank" rel="noopener" class="btn btn-sm btn-success" style="text-decoration:none;">WhatsApp</a>
             </div>
           </div>
-          <div style="font-size:0.72rem;color:#a7f3d0;">
-            💡 <strong>İpucu:</strong> Telefonunuzda bu QR kodu bir kez okutup tarayıcı menüsünden <strong>"Ana Ekrana Ekle"</strong> derseniz telefonunuzda kalıcı uygulama gibi çalışır.
+          <div style="font-size:0.72rem;color:#94a3b8;">
+            💡 <strong style="color:#e2e8f0;">İpucu:</strong> Telefonunuzda bu QR kodu bir kez okutup tarayıcı menüsünden <strong>"Ana Ekrana Ekle"</strong> derseniz telefonunuzda kalıcı uygulama gibi çalışır.
           </div>
         </div>
       </div>
@@ -3321,30 +3321,30 @@ function renderNetworkModalContent() {
 
   // 2. BÖLÜM: AYNI OFİS WI-FI AĞI DOĞRUDAN YEREL IP BAĞLANTISI (ANDROID & IPHONE UYUMLU)
   const fixedLanHTML = `
-    <div style="background:#f9f8f6;border:1.5px solid #cbd5e1;border-radius:12px;padding:14px 16px;margin-bottom:14px;">
+    <div style="background:#faf9f6;border:1.5px solid #cbd5e1;border-radius:12px;padding:14px 16px;margin-bottom:14px;">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-        <div style="font-size:0.76rem;font-weight:800;color:#090d16;letter-spacing:0.05em;text-transform:uppercase;">
+        <div style="font-size:0.76rem;font-weight:800;color:#182232;letter-spacing:0.05em;text-transform:uppercase;">
           2. AYNI OFİS WI-FI AĞI DOĞRUDAN BAĞLANTI (İNTERNETSİZ YEREL AĞ &amp; MOBİL)
         </div>
-        <button type="button" class="btn btn-sm" style="background:#0f172a;color:#f8fafc;font-weight:700;border:1px solid #334155;" onclick="repairWindowsFirewallNow()">
+        <button type="button" class="btn btn-sm btn-primary" onclick="repairWindowsFirewallNow()">
           🛡️ Güvenlik Duvarı Mobil Erişim İznini Onar
         </button>
       </div>
       <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
-        <img src="${lanQrApi}" alt="Yerel Ağ Doğrudan IP QR" style="width:98px;height:98px;border-radius:8px;border:2px solid #0f172a;background:#fff;padding:4px;flex-shrink:0;" />
+        <img src="${lanQrApi}" alt="Yerel Ağ Doğrudan IP QR" style="width:98px;height:98px;border-radius:8px;border:1.5px solid #334155;background:#fff;padding:4px;flex-shrink:0;" />
         <div style="flex:1;min-width:220px;">
-          <div style="font-size:0.77rem;color:#334155;margin-bottom:8px;line-height:1.45;">
+          <div style="font-size:0.77rem;color:#475569;margin-bottom:8px;line-height:1.45;">
             Telefon veya tabletiniz ofis Wi-Fi ağına (<strong>DEMİRTÜRK İNŞAAT</strong>) bağlıyken <strong>Android ve iPhone</strong> cihazlardan doğrudan aşağıdaki sayısal IP adresleriyle bağlanabilirsiniz:
           </div>
           ${ipUrls
             .map(
               (u, idx) => `
-            <div class="lan-url-box" style="margin-bottom:6px;border-left:4px solid ${idx === 0 ? "#16a34a" : "#c5a059"};background:#fff;">
+            <div class="lan-url-box" style="margin-bottom:6px;border-left:4px solid ${idx === 0 ? "#3b8764" : "#b89550"};background:#fff;">
               <div>
-                <span style="font-weight:800;color:#0f172a;font-size:0.86rem;">${u}</span>
-                <span style="font-size:0.69rem;color:#15803d;margin-left:6px;font-weight:700;">(Android &amp; iPhone Uyumlu Doğrudan IP)</span>
+                <span style="font-weight:800;color:#182232;font-size:0.85rem;">${u}</span>
+                <span style="font-size:0.69rem;color:#2d6e50;margin-left:6px;font-weight:700;">(Android &amp; iPhone Uyumlu Doğrudan IP)</span>
               </div>
-              <button type="button" class="btn btn-sm btn-gold" onclick="navigator.clipboard.writeText('${u}'); showToast('Yerel IP adresi kopyalandı: ${u}')">Kopyala</button>
+              <button type="button" class="btn btn-sm btn-ghost" onclick="navigator.clipboard.writeText('${u}'); showToast('Yerel IP adresi kopyalandı: ${u}')">Kopyala</button>
             </div>
           `
             )
@@ -3357,15 +3357,15 @@ function renderNetworkModalContent() {
   // 3. BÖLÜM: ÇOKLU OFİS ANABİLGİSAYAR EŞLEŞTİRME
   const peersRowsHTML =
     peers.length === 0
-      ? `<div style="background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.18);border-radius:8px;padding:12px;font-size:0.79rem;color:#cbd5e1;text-align:center;">
+      ? `<div style="background:rgba(255,255,255,0.04);border:1px dashed rgba(203,213,225,0.22);border-radius:8px;padding:12px;font-size:0.79rem;color:#cbd5e1;text-align:center;">
           Diğer bilgisayarda uygulama açıldığında <strong>otomatik olarak</strong> burada görünecektir. Hemen taramak için yukarıdaki <strong>"🔍 Otomatik Bul ve Eşleştir"</strong> butonuna tıklayabilirsiniz.
         </div>`
       : peers
           .map((p) => {
             const isOnline = p.status === "ONLINE";
             const statusBadge = isOnline
-              ? `<span style="background:#16a34a;color:#fff;font-size:0.66rem;font-weight:800;padding:2px 8px;border-radius:99px;">● BAĞLI & CANLI SENKRON</span>`
-              : `<span style="background:#d97706;color:#fff;font-size:0.66rem;font-weight:800;padding:2px 8px;border-radius:99px;">● ARANIYOR (${p.lastError || "Bağlanıyor"})</span>`;
+              ? `<span style="background:rgba(70,156,118,0.25);color:#a7f3d0;border:1px solid rgba(91,179,139,0.45);font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:99px;">● BAĞLI & CANLI SENKRON</span>`
+              : `<span style="background:rgba(196,121,39,0.25);color:#fde68a;border:1px solid rgba(196,121,39,0.45);font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:99px;">● ARANIYOR (${p.lastError || "Bağlanıyor"})</span>`;
             const syncTime = p.lastSyncAt
               ? new Date(p.lastSyncAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
               : "Henüz eşitlenmedi";
@@ -3374,18 +3374,18 @@ function renderNetworkModalContent() {
                 ? `Otomatik Bulut Rölesi (${p.remoteHostname || "Uzak Ofis"})`
                 : p.url || "Otomatik Bağlantı";
             return `
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:rgba(0,0,0,0.32);border:1px solid rgba(255,255,255,0.14);border-left:4px solid ${isOnline ? "#22c55e" : "#f59e0b"};border-radius:8px;padding:10px 12px;margin-bottom:8px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:rgba(15,22,34,0.45);border:1px solid rgba(203,213,225,0.16);border-left:4px solid ${isOnline ? "#469c76" : "#c47927"};border-radius:8px;padding:10px 12px;margin-bottom:8px;">
                 <div style="min-width:200px;flex:1;">
                   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                    <strong style="color:#ffffff;font-size:0.86rem;">${p.name || "Diğer Ofis Anabilgisayar"}</strong>
+                    <strong style="color:#f1f5f9;font-size:0.85rem;">${p.name || "Diğer Ofis Anabilgisayar"}</strong>
                     ${statusBadge}
                   </div>
-                  <div style="font-family:var(--font-mono);font-size:0.75rem;color:#93c5fd;margin-top:3px;word-break:break-all;">${displayUrl}</div>
+                  <div style="font-family:var(--font-mono);font-size:0.74rem;color:#93c5fd;margin-top:3px;word-break:break-all;">${displayUrl}</div>
                   <div style="font-size:0.69rem;color:#94a3b8;margin-top:2px;">Son Senkronizasyon: ${syncTime}</div>
                 </div>
                 <div style="display:flex;gap:6px;flex-shrink:0;">
-                  <button type="button" class="btn btn-sm" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2);" onclick="syncPeersNow()">Şimdi Eşitle</button>
-                  <button type="button" class="btn btn-sm" style="background:#7f1d1d;color:#fecaca;border:1px solid #dc2626;" onclick="removePeerHost('${p.id}')">Kaldır</button>
+                  <button type="button" class="btn btn-sm" style="background:rgba(255,255,255,0.1);color:#f1f5f9;border:1px solid rgba(203,213,225,0.24);" onclick="syncPeersNow()">Şimdi Eşitle</button>
+                  <button type="button" class="btn btn-sm" style="background:rgba(158,51,51,0.35);color:#fecaca;border:1px solid rgba(184,74,74,0.5);" onclick="removePeerHost('${p.id}')">Kaldır</button>
                 </div>
               </div>
             `;
@@ -3393,16 +3393,16 @@ function renderNetworkModalContent() {
           .join("");
 
   const multiOfficePeerHTML = `
-    <div style="background:linear-gradient(135deg,#090d16 0%,#162033 100%);color:#f8fafc;border:1.5px solid #c5a059;border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:0 10px 26px rgba(9,13,22,0.18);">
+    <div style="background:linear-gradient(135deg,#151f2e 0%,#1d2b3f 100%);color:#f1f5f9;border:1.5px solid #b89550;border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:0 8px 22px rgba(15,22,34,0.16);">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#c5a059;box-shadow:0 0 10px #c5a059;"></span>
-          <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.06em;color:#f3e3b8;text-transform:uppercase;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#cfb070;box-shadow:0 0 0 3px rgba(207,176,112,0.2);"></span>
+          <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.05em;color:#e4cfa1;text-transform:uppercase;">
             3. OFİSLER ARASI ANABİLGİSAYAR EŞLEŞTİRME (${peers.length} BAĞLI ANABİLGİSAYAR)
           </span>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button type="button" class="btn btn-sm" style="background:#16a34a;color:#fff;font-weight:800;border:1px solid #22c55e;" onclick="autoDiscoverPeersNow()">
+          <button type="button" class="btn btn-sm btn-success" onclick="autoDiscoverPeersNow()">
             🔍 Otomatik Bul ve Eşleştir
           </button>
           <button type="button" class="btn btn-sm btn-gold" onclick="syncPeersNow()">
