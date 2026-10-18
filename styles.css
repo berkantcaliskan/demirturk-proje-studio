@@ -2189,11 +2189,197 @@ html, body {
 }
 .fp-compass-dir {
   position: absolute;
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   font-weight: 800;
   color: #5c3f14;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* ==========================================================================
+   STANDART MİMARİ PAFTA ÇERÇEVESİ (TÜM PROJELERDE SABİT ÜST VE ALT BAR)
+   Logo, Proje Adı, Ada/Parsel, Teslim Tarihi, Pusula, Kat Adı ve Peşinat/Vade
+   ========================================================================== */
+.fp-sheet-topbar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1219px;
+  height: 88px;
+  background: linear-gradient(180deg, #f4f1ea 0%, #eae5d9 100%);
+  border-bottom: 2px solid #cfc8b8;
+  z-index: 20;
+}
+
+.fp-sheet-logo-box {
+  position: absolute;
+  left: 18px;
+  top: 12px;
+  width: 248px;
+  height: 62px;
+  background: #faf8f4;
+  border: 1.5px solid #d5cfc0;
+  border-left: 4px solid #26594c;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  box-shadow: 0 2px 6px rgba(27, 38, 48, 0.05);
+  z-index: 22;
+}
+
+.fp-sheet-logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fp-sheet-identity-box {
+  position: absolute;
+  left: 280px;
+  top: 10px;
+  width: 530px;
+  height: 66px;
+  background: #faf8f4;
+  border: 1.5px solid #d5cfc0;
+  border-top: 3.5px solid #23353f;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  box-shadow: 0 2px 6px rgba(27, 38, 48, 0.05);
+  z-index: 22;
+}
+
+.fp-sheet-proj-name {
+  font-size: 1.24rem;
+  font-weight: 800;
+  color: #1b2630;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.fp-sheet-proj-loc {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #7d5b21;
+  margin-top: 2px;
+}
+
+.fp-sheet-delivery-box {
+  position: absolute;
+  left: 824px;
+  top: 12px;
+  width: 220px;
+  height: 62px;
+  background: #fbf3f3;
+  border: 1.5px solid #dfbaba;
+  border-top: 3.5px solid #9e3b3f;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  box-shadow: 0 2px 6px rgba(27, 38, 48, 0.05);
+  z-index: 22;
+}
+
+.fp-sheet-delivery-lbl {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #9e3b3f;
+  text-transform: uppercase;
+}
+
+.fp-sheet-delivery-val {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #23353f;
+  margin-top: 1px;
+}
+
+.fp-sheet-compass-widget {
+  position: absolute;
+  left: 1058px;
+  top: 6px;
+  width: 144px;
+  height: 76px;
+  background: #faf8f4;
+  border: 1.5px solid #d5cfc0;
+  border-radius: 10px;
+  z-index: 22;
+  box-shadow: 0 2px 6px rgba(27, 38, 48, 0.05);
+}
+
+.fp-sheet-bottombar {
+  position: absolute;
+  left: 0;
+  top: 634px;
+  width: 1219px;
+  height: 52px;
+  background: linear-gradient(180deg, #f4f1ea 0%, #eae5d9 100%);
+  border-top: 2px solid #cfc8b8;
+  z-index: 20;
+}
+
+.fp-sheet-floor-badge {
+  position: absolute;
+  left: 18px;
+  top: 641px;
+  width: 210px;
+  height: 38px;
+  background: linear-gradient(135deg, #23353f 0%, #18262e 100%);
+  border: 1.5px solid #c8a668;
+  border-radius: 9px;
+  color: #ebd29d;
+  font-size: 1.04rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(27, 38, 48, 0.14);
+  z-index: 22;
+}
+
+.fp-sheet-payment-bar {
+  position: absolute;
+  left: 240px;
+  top: 641px;
+  width: 961px;
+  height: 38px;
+  background: linear-gradient(135deg, #26594c 0%, #1c443a 100%);
+  border: 1.5px solid #59b399;
+  border-radius: 9px;
+  color: #ffffff;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 0 18px;
+  box-shadow: 0 2px 6px rgba(24, 68, 57, 0.16);
+  z-index: 22;
+}
+
+.fp-sheet-payment-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #a7f3d0;
 }
 
 /* Tüm Katlar Panorama Görünümü */

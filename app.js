@@ -1837,86 +1837,107 @@ function generateFloorPlanSlideHTML(proj, floor) {
 }
 
 // ------------------------------------------------------------
+// TÜM PROJELER İÇİN ORTAK STANDART MİMARİ PAFTA ÇERÇEVESİ
+// (Logo, Proje Adı, Ada/Parsel, Teslim Tarihi, Pusula, Kat Adı ve Peşinat/Vade Sabit!)
+// ------------------------------------------------------------
+function renderUnifiedSheetChrome(proj, floor, compassDirs) {
+  const dirs = compassDirs || { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" };
+  const subtitleText = proj.subtitle ? ` <span style="opacity:0.75;font-weight:600;">• ${proj.subtitle}</span>` : "";
+
+  return `
+    <!-- ÜST SABİT MİMARİ PAFTA BARI (Y: 0..88px) -->
+    <div class="fp-sheet-topbar"></div>
+
+    <!-- 1. Sol Üst Sabit Kurumsal Logo (Tüm Projelerde Aynı Logo ve Aynı Konum) -->
+    <div class="fp-sheet-logo-box">
+      <img src="assets/p1_image1.png?v=15" alt="Demirtürk Yapı Karasu" />
+    </div>
+
+    <!-- 2. Orta Üst Sabit Proje Adı & Mahalle / Ada-Parsel -->
+    <div class="fp-sheet-identity-box">
+      <div class="fp-sheet-proj-name">${proj.name}</div>
+      <div class="fp-sheet-proj-loc">${proj.neighborhood} • ${proj.adaParsel}</div>
+    </div>
+
+    <!-- 3. Sağ Üst Sabit Teslim Tarihi Kutusu -->
+    <div class="fp-sheet-delivery-box">
+      <span class="fp-sheet-delivery-lbl">TESLİM TARİHİ</span>
+      <span class="fp-sheet-delivery-val">${proj.deliveryDate}</span>
+    </div>
+
+    <!-- 4. En Sağ Üst Sabit Pusula (Tüm Projelerde Birebir Aynı Noktada) -->
+    <div class="fp-sheet-compass-widget">
+      <div class="fp-compass-box" style="left:49px;top:15px;width:46px;height:46px;">
+        <img src="assets/p1_image2.png" alt="Pusula" />
+      </div>
+      <div class="fp-compass-dir" style="left:0;right:0;top:2px;text-align:center;font-size:0.62rem;">${dirs.top}</div>
+      <div class="fp-compass-dir" style="left:0;right:0;bottom:2px;text-align:center;font-size:0.62rem;">${dirs.bottom}</div>
+      <div class="fp-compass-dir" style="left:6px;top:30px;font-size:0.62rem;">${dirs.left}</div>
+      <div class="fp-compass-dir" style="right:6px;top:30px;font-size:0.62rem;">${dirs.right}</div>
+    </div>
+
+    <!-- ALT SABİT MİMARİ PAFTA BARI (Y: 634..686px) -->
+    <div class="fp-sheet-bottombar"></div>
+
+    <!-- 5. Sol Alt Sabit Kat Göstergesi (ZEMİN KAT, 1. KAT vb.) -->
+    <div class="fp-sheet-floor-badge">
+      ${floor.name}
+    </div>
+
+    <!-- 6. Orta/Sağ Alt Sabit Ödeme Planı (Peşinat & Vade Bilgisi) -->
+    <div class="fp-sheet-payment-bar">
+      <span class="fp-sheet-payment-tag">ÖDEME PLANI</span>
+      <span>${proj.paymentPlan}${subtitleText}</span>
+    </div>
+  `;
+}
+
+// ------------------------------------------------------------
 // ŞABLON 1: Ada 1104 Parsel 14 (Aziziye Mahallesi)
 // ------------------------------------------------------------
 function renderTemplate1104(proj, floor) {
   const slotCoords = {
-    "top-left": { x: 309, y: 229, w: 227, h: 119 },
-    "top-right": { x: 625, y: 228, w: 279, h: 118 },
-    "bottom-left": { x: 292, y: 348, w: 295, h: 121 },
-    "bottom-right": { x: 587, y: 346, w: 279, h: 121 }
+    "top-left": { x: 309, y: 205, w: 227, h: 119 },
+    "top-right": { x: 625, y: 204, w: 279, h: 118 },
+    "bottom-left": { x: 292, y: 324, w: 295, h: 121 },
+    "bottom-right": { x: 587, y: 322, w: 279, h: 121 }
   };
 
-  // Merdiven basamak çizgileri
   let stairsLines = "";
-  for (let y = 205; y <= 317; y += 7) {
+  for (let y = 181; y <= 293; y += 7) {
     stairsLines += `<div style="position:absolute;left:536px;top:${y}px;width:40px;height:1px;background:#64748b;z-index:5;"></div>`;
   }
 
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
-      const coords = slotCoords[apt.slot] || { x: 309 + (idx % 2) * 316, y: 229 + Math.floor(idx / 2) * 120, w: 260, h: 118 };
+      const coords = slotCoords[apt.slot] || { x: 309 + (idx % 2) * 316, y: 205 + Math.floor(idx / 2) * 120, w: 260, h: 118 };
       return buildApartmentBoxHTML(proj, floor, apt, coords);
     })
     .join("");
 
   return `
-    <!-- Sol Üst Kutu: Mahalle ve Ada/Parsel -->
-    <div class="fp-el" style="left:0;top:0;width:225px;height:64px;background:#23353f;color:#f8fafc;align-items:flex-start;padding-left:14px;border-bottom:3px solid #c8a668;border-radius:0 0 8px 0;">
-      <div style="font-size:1.08rem;font-weight:800;letter-spacing:0.02em;">${proj.neighborhood}</div>
-      <div style="font-size:0.92rem;font-weight:700;color:#dfc28d;">${proj.adaParsel}</div>
-    </div>
-
-    <!-- KAT PLANI & Proje Başlığı -->
-    <div class="fp-el" style="left:230px;top:6px;width:210px;height:52px;font-size:1.1rem;font-weight:800;color:#23353f;line-height:1.15;">
-      ${proj.name}
-    </div>
-
-    <!-- Orta Üst Logo & Peşinat -->
-    <img src="assets/p1_image1.png?v=15" alt="Demirtürk Yapı Karasu" style="position:absolute;left:445px;top:4px;width:305px;height:52px;object-fit:contain;" />
-    <div class="fp-el" style="left:470px;top:56px;width:260px;height:44px;font-size:1.16rem;font-weight:800;color:#23353f;">
-      ${proj.paymentPlan}
-    </div>
-
-    <!-- Teslim Tarihi -->
-    <div class="fp-el" style="left:800px;top:10px;width:185px;height:36px;font-size:1.15rem;font-weight:800;color:#8c3b3b;background:#f9ecec;border:1px solid #e2c2c2;border-radius:8px;">
-      ${proj.deliveryDate}
-    </div>
-
-    <!-- Pusula -->
-    <div class="fp-compass-box" style="left:1055px;top:30px;width:98px;height:96px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1022px;top:12px;">Kuzey</div>
-    <div class="fp-compass-dir" style="left:1142px;top:20px;">Doğu</div>
-    <div class="fp-compass-dir" style="left:1009px;top:110px;">Batı</div>
-    <div class="fp-compass-dir" style="left:1112px;top:118px;">Güney</div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
     <!-- Giriş & Merdiven Holü -->
-    <div class="fp-el" style="left:521px;top:145px;width:75px;height:24px;font-size:0.95rem;font-weight:800;color:#285e54;letter-spacing:0.04em;">GİRİŞ</div>
-    <div style="position:absolute;left:574px;top:158px;width:50px;height:62px;background:#334854;border:2px solid #23353f;border-radius:4px;"></div>
-    <div style="position:absolute;left:536px;top:198px;width:40px;height:125px;background:#e6e4dd;border:2px solid #475569;"></div>
+    <div class="fp-el" style="left:521px;top:118px;width:75px;height:24px;font-size:0.95rem;font-weight:800;color:#285e54;letter-spacing:0.04em;">GİRİŞ</div>
+    <div style="position:absolute;left:574px;top:134px;width:50px;height:62px;background:#334854;border:2px solid #23353f;border-radius:4px;"></div>
+    <div style="position:absolute;left:536px;top:174px;width:40px;height:125px;background:#e6e4dd;border:2px solid #475569;"></div>
     ${stairsLines}
-    <div class="fp-el" style="left:526px;top:246px;width:62px;height:24px;font-size:0.65rem;font-weight:800;color:#23353f;background:rgba(255,255,255,0.92);z-index:6;border-radius:4px;">MERDİVEN</div>
-    <div style="position:absolute;left:536px;top:323px;width:89px;height:25px;background:#efede7;border:2px solid #475569;"></div>
+    <div class="fp-el" style="left:526px;top:222px;width:62px;height:24px;font-size:0.65rem;font-weight:800;color:#23353f;background:rgba(255,255,255,0.92);z-index:6;border-radius:4px;">MERDİVEN</div>
+    <div style="position:absolute;left:536px;top:299px;width:89px;height:25px;background:#efede7;border:2px solid #475569;"></div>
 
     <!-- 4 Balkon -->
-    <div class="fp-balcony" style="left:267px;top:279px;width:42px;height:69px;">BALKON</div>
-    <div class="fp-balcony" style="left:904px;top:279px;width:42px;height:67px;">BALKON</div>
-    <div class="fp-balcony" style="left:349px;top:469px;width:42px;height:85px;">BALKON</div>
-    <div class="fp-balcony" style="left:778px;top:467px;width:42px;height:85px;">BALKON</div>
+    <div class="fp-balcony" style="left:267px;top:255px;width:42px;height:69px;">BALKON</div>
+    <div class="fp-balcony" style="left:904px;top:255px;width:42px;height:67px;">BALKON</div>
+    <div class="fp-balcony" style="left:349px;top:445px;width:42px;height:80px;">BALKON</div>
+    <div class="fp-balcony" style="left:778px;top:443px;width:42px;height:80px;">BALKON</div>
 
     <!-- Daireler -->
     ${aptsHTML}
 
     <!-- Havuz -->
-    <div class="fp-pool" style="left:435px;top:538px;width:324px;height:116px;">
+    <div class="fp-pool" style="left:435px;top:510px;width:324px;height:104px;">
       HAVUZ
-    </div>
-
-    <!-- Sol Alt Kutu: Kat Adı -->
-    <div class="fp-el" style="left:0;top:644px;width:195px;height:42px;background:#23353f;color:#dfc28d;font-size:1.08rem;font-weight:800;letter-spacing:0.05em;border-top:2px solid #c8a668;border-radius:0 8px 0 0;">
-      ${floor.name}
     </div>
   `;
 }
@@ -1925,88 +1946,55 @@ function renderTemplate1104(proj, floor) {
 // ŞABLON 2: ASEL DOĞA EVLERİ 4 (Aşağıaziziye 1105 Ada 13 Parsel)
 // ------------------------------------------------------------
 function renderTemplateAsel4(proj, floor) {
+  const ox = 75;
   const slotCoords = {
-    "a-top-right": { x: 502, y: 218, w: 140, h: 141 },
-    "a-bottom-mid": { x: 416, y: 359, w: 120, h: 155 },
-    "a-bottom-left": { x: 296, y: 332, w: 120, h: 182 },
-    "b-top-left": { x: 649, y: 218, w: 120, h: 141 },
-    "b-right": { x: 769, y: 218, w: 112, h: 275 }
+    "a-top-right": { x: ox + 502, y: 198, w: 140, h: 141 },
+    "a-bottom-mid": { x: ox + 416, y: 339, w: 120, h: 155 },
+    "a-bottom-left": { x: ox + 296, y: 312, w: 120, h: 182 },
+    "b-top-left": { x: ox + 649, y: 198, w: 120, h: 141 },
+    "b-right": { x: ox + 769, y: 198, w: 112, h: 275 }
   };
 
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
-      const coords = slotCoords[apt.slot] || { x: 300 + idx * 130, y: 250, w: 125, h: 150 };
+      const coords = slotCoords[apt.slot] || { x: ox + 300 + idx * 130, y: 230, w: 125, h: 150 };
       return buildApartmentBoxHTML(proj, floor, apt, coords);
     })
     .join("");
 
   return `
-    <!-- Sol Üst Logo -->
-    <img src="assets/p2_image1.png?v=15" alt="Demirtürk Yapı İnşaat" style="position:absolute;left:28px;top:26px;width:238px;height:115px;object-fit:contain;" />
-
-    <!-- Üst Başlık -->
-    <div class="fp-el" style="left:360px;top:42px;width:490px;height:64px;font-size:1.75rem;font-weight:800;color:#23353f;letter-spacing:0.02em;">
-      ${proj.name}
-    </div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
     <!-- Sol Dikey YOL Şeridi -->
-    <div class="fp-el" style="left:162px;top:160px;width:52px;height:466px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1.1rem;font-weight:800;color:#475569;letter-spacing:0.08em;">
+    <div class="fp-el" style="left:${ox + 162}px;top:130px;width:52px;height:466px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1.1rem;font-weight:800;color:#475569;letter-spacing:0.08em;">
       YOL
     </div>
 
     <!-- A Giriş & B Giriş Etiketleri ve Merdiven/Ortak Alan -->
-    <div class="fp-el" style="left:415px;top:155px;width:95px;height:28px;font-size:0.88rem;font-weight:800;color:#23353f;background:#eae7df;border:1.5px solid #c5bfb2;border-radius:6px;">A GİRİŞ</div>
-    <div class="fp-el" style="left:695px;top:155px;width:95px;height:28px;font-size:0.88rem;font-weight:800;color:#23353f;background:#eae7df;border:1.5px solid #c5bfb2;border-radius:6px;">B GİRİŞ</div>
+    <div class="fp-el" style="left:${ox + 415}px;top:135px;width:95px;height:28px;font-size:0.88rem;font-weight:800;color:#23353f;background:#eae7df;border:1.5px solid #c5bfb2;border-radius:6px;">A GİRİŞ</div>
+    <div class="fp-el" style="left:${ox + 695}px;top:135px;width:95px;height:28px;font-size:0.88rem;font-weight:800;color:#23353f;background:#eae7df;border:1.5px solid #c5bfb2;border-radius:6px;">B GİRİŞ</div>
 
     <!-- A Giriş Sol Üst Ortak/Hol Alanı -->
-    <div style="position:absolute;left:357px;top:218px;width:145px;height:114px;background:#efede7;border:1.5px solid #64748b;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:#475569;text-align:center;">
+    <div style="position:absolute;left:${ox + 357}px;top:198px;width:145px;height:114px;background:#efede7;border:1.5px solid #64748b;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:#475569;text-align:center;">
       A BLOK HOL / MERDİVEN
     </div>
 
     <!-- Blok Ayrım Duvarı -->
-    <div style="position:absolute;left:642px;top:218px;width:7px;height:160px;background:#334854;z-index:15;border-radius:3px;"></div>
+    <div style="position:absolute;left:${ox + 642}px;top:198px;width:7px;height:160px;background:#334854;z-index:15;border-radius:3px;"></div>
 
     <!-- Balkonlar -->
-    <div class="fp-balcony" style="left:595px;top:359px;width:47px;height:20px;">BALKON</div>
-    <div class="fp-balcony" style="left:649px;top:359px;width:52px;height:20px;">BALKON</div>
-    <div class="fp-balcony" style="left:263px;top:494px;width:55px;height:20px;">BALKON</div>
-    <div class="fp-balcony" style="left:513px;top:494px;width:56px;height:20px;">BALKON</div>
-    <div class="fp-balcony" style="left:769px;top:493px;width:112px;height:20px;">BALKON</div>
+    <div class="fp-balcony" style="left:${ox + 595}px;top:339px;width:47px;height:20px;">BALKON</div>
+    <div class="fp-balcony" style="left:${ox + 649}px;top:339px;width:52px;height:20px;">BALKON</div>
+    <div class="fp-balcony" style="left:${ox + 263}px;top:474px;width:55px;height:20px;">BALKON</div>
+    <div class="fp-balcony" style="left:${ox + 513}px;top:474px;width:56px;height:20px;">BALKON</div>
+    <div class="fp-balcony" style="left:${ox + 769}px;top:473px;width:112px;height:20px;">BALKON</div>
 
     <!-- Daireler -->
     ${aptsHTML}
 
     <!-- Havuz -->
-    <div class="fp-pool" style="left:563px;top:393px;width:194px;height:129px;">
+    <div class="fp-pool" style="left:${ox + 563}px;top:373px;width:194px;height:129px;">
       HAVUZ
-    </div>
-
-    <!-- Pusula -->
-    <div class="fp-compass-box" style="left:910px;top:140px;width:69px;height:68px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:922px;top:116px;">KUZEY</div>
-    <div class="fp-compass-dir" style="left:983px;top:163px;">DOĞU</div>
-    <div class="fp-compass-dir" style="left:922px;top:210px;">GÜNEY</div>
-    <div class="fp-compass-dir" style="left:862px;top:163px;">BATI</div>
-
-    <!-- Sağ Bilgi Kutuları (Teslim Tarihi, Ada/Parsel, Ödeme Planı, Kat) -->
-    <div class="fp-el" style="left:1010px;top:85px;width:175px;height:58px;background:#f8f6f1;border:1.5px solid #d5cfc2;border-top:4px solid #9e4747;border-radius:8px;padding:6px;font-size:0.84rem;font-weight:800;">
-      <span style="color:#9e4747;font-size:0.66rem;letter-spacing:0.06em;">TESLİM TARİHİ</span>
-      <span style="color:#23353f;">${proj.deliveryDate}</span>
-    </div>
-
-    <div class="fp-el" style="left:1010px;top:225px;width:175px;height:68px;background:#f8f6f1;border:1.5px solid #d5cfc2;border-top:4px solid #285e54;border-radius:8px;padding:6px;font-size:0.85rem;font-weight:800;">
-      <span style="color:#23353f;">${proj.neighborhood}</span>
-      <span style="color:#87662c;">${proj.adaParsel}</span>
-    </div>
-
-    <div class="fp-el" style="left:1010px;top:365px;width:175px;height:96px;background:#fbf6eb;border:1.5px solid #e2ce9f;border-top:4px solid #b88e44;border-radius:8px;padding:8px;font-size:0.86rem;font-weight:800;color:#5c3f14;">
-      ${proj.paymentPlan}
-    </div>
-
-    <div class="fp-el" style="left:1010px;top:565px;width:175px;height:48px;background:#23353f;color:#dfc28d;border-radius:8px;font-size:1.12rem;font-weight:800;letter-spacing:0.04em;">
-      ${floor.name}
     </div>
   `;
 }
@@ -2016,46 +2004,24 @@ function renderTemplateAsel4(proj, floor) {
 // ------------------------------------------------------------
 function renderTemplateAsel2(proj, floor) {
   const slotCoords = {
-    "b-left": { x: 115, y: 371, w: 208, h: 151 },
-    "b-right": { x: 370, y: 371, w: 208, h: 151 },
-    "a-left": { x: 625, y: 371, w: 208, h: 151 },
-    "a-right": { x: 880, y: 371, w: 208, h: 151 }
+    "b-left": { x: 115, y: 346, w: 208, h: 151 },
+    "b-right": { x: 370, y: 346, w: 208, h: 151 },
+    "a-left": { x: 625, y: 346, w: 208, h: 151 },
+    "a-right": { x: 880, y: 346, w: 208, h: 151 }
   };
 
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
-      const coords = slotCoords[apt.slot] || { x: 115 + idx * 255, y: 371, w: 208, h: 151 };
+      const coords = slotCoords[apt.slot] || { x: 115 + idx * 255, y: 346, w: 208, h: 151 };
       return buildApartmentBoxHTML(proj, floor, apt, coords);
     })
     .join("");
 
   return `
-    <!-- Sol Üst Proje & Ada Parsel -->
-    <div class="fp-el" style="left:35px;top:32px;width:265px;height:42px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:1.06rem;font-weight:800;border-bottom:3px solid #c8a668;">
-      ${proj.name}
-    </div>
-    <div class="fp-el" style="left:35px;top:82px;width:265px;height:56px;font-size:1.02rem;font-weight:800;color:#23353f;align-items:flex-start;">
-      <div>${proj.neighborhood}</div>
-      <div style="color:#87662c;">${proj.adaParsel}</div>
-    </div>
-
-    <!-- Orta Üst Logo & Teslim Tarihi -->
-    <img src="assets/p1_image1.png?v=15" alt="Demirtürk Yapı Karasu" style="position:absolute;left:445px;top:24px;width:320px;height:56px;object-fit:contain;" />
-    <div class="fp-el" style="left:458px;top:94px;width:287px;height:36px;font-size:1.18rem;font-weight:800;color:#8c3b3b;background:#f9ecec;border:1px solid #e2c2c2;border-radius:8px;">
-      ${proj.deliveryDate}
-    </div>
-
-    <!-- Sağ Üst Pusula (Batı Üst, Doğu Alt, Kuzey Sağ, Güney Sol) -->
-    <div class="fp-compass-box" style="left:1043px;top:35px;width:115px;height:114px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1084px;top:12px;">Batı</div>
-    <div class="fp-compass-dir" style="left:1082px;top:150px;">Doğu</div>
-    <div class="fp-compass-dir" style="left:1162px;top:82px;">Kuzey</div>
-    <div class="fp-compass-dir" style="left:992px;top:82px;">Güney</div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "BATI", bottom: "DOĞU", left: "GÜNEY", right: "KUZEY" })}
 
     <!-- Sol Üst Havuz -->
-    <div class="fp-pool" style="left:115px;top:168px;width:255px;height:171px;">
+    <div class="fp-pool" style="left:115px;top:142px;width:255px;height:171px;">
       HAVUZ
     </div>
 
@@ -2063,27 +2029,19 @@ function renderTemplateAsel2(proj, floor) {
     ${aptsHTML}
 
     <!-- B Giriş & A Giriş Yukarı Oklar -->
-    <div class="fp-el" style="left:323px;top:425px;width:47px;height:95px;background:#23353f;color:#dfc28d;font-weight:800;font-size:1.35rem;border-radius:6px;z-index:12;" title="B Giriş Merdiven/Giriş Holü">
+    <div class="fp-el" style="left:323px;top:400px;width:47px;height:95px;background:#23353f;color:#dfc28d;font-weight:800;font-size:1.35rem;border-radius:6px;z-index:12;" title="B Giriş Merdiven/Giriş Holü">
       ↑
     </div>
-    <div class="fp-el" style="left:833px;top:425px;width:47px;height:95px;background:#23353f;color:#dfc28d;font-weight:800;font-size:1.35rem;border-radius:6px;z-index:12;" title="A Giriş Merdiven/Giriş Holü">
+    <div class="fp-el" style="left:833px;top:400px;width:47px;height:95px;background:#23353f;color:#dfc28d;font-weight:800;font-size:1.35rem;border-radius:6px;z-index:12;" title="A Giriş Merdiven/Giriş Holü">
       ↑
     </div>
 
-    <!-- B Giriş & A Giriş Etiketleri + Kat Kutusu -->
-    <div class="fp-el" style="left:265px;top:532px;width:167px;height:52px;font-size:1.25rem;font-weight:800;color:#23353f;">
+    <!-- B Giriş & A Giriş Etiketleri -->
+    <div class="fp-el" style="left:286px;top:514px;width:120px;height:36px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.95rem;font-weight:800;">
       B Giriş
     </div>
-    <div class="fp-el" style="left:462px;top:540px;width:315px;height:40px;background:#23353f;color:#dfc28d;font-size:1.15rem;font-weight:800;border-radius:8px;letter-spacing:0.05em;">
-      ${floor.name}
-    </div>
-    <div class="fp-el" style="left:770px;top:532px;width:167px;height:52px;font-size:1.25rem;font-weight:800;color:#23353f;">
+    <div class="fp-el" style="left:796px;top:514px;width:120px;height:36px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.95rem;font-weight:800;">
       A Giriş
-    </div>
-
-    <!-- Alt Boydan Boya Peşinat & Vade Şeridi -->
-    <div class="fp-el" style="left:0;top:621px;width:1219px;height:65px;background:#23353f;color:#f8fafc;font-size:1.3rem;font-weight:800;letter-spacing:0.03em;border-top:3px solid #c8a668;">
-      ${proj.paymentPlan}
     </div>
   `;
 }
@@ -2093,48 +2051,26 @@ function renderTemplateAsel2(proj, floor) {
 // ------------------------------------------------------------
 function renderTemplateAsel1(proj, floor) {
   const slotCoords = {
-    "b-top-left": { x: 162, y: 160, w: 224, h: 180 },
-    "b-bottom-left": { x: 162, y: 342, w: 224, h: 175 },
-    "b-right-tall": { x: 389, y: 160, w: 230, h: 357 },
-    "a-left-tall": { x: 625, y: 160, w: 230, h: 357 },
-    "a-top-right": { x: 858, y: 160, w: 232, h: 180 },
-    "a-bottom-right": { x: 858, y: 342, w: 232, h: 175 }
+    "b-top-left": { x: 162, y: 145, w: 224, h: 180 },
+    "b-bottom-left": { x: 162, y: 327, w: 224, h: 175 },
+    "b-right-tall": { x: 389, y: 145, w: 230, h: 357 },
+    "a-left-tall": { x: 625, y: 145, w: 230, h: 357 },
+    "a-top-right": { x: 858, y: 145, w: 232, h: 180 },
+    "a-bottom-right": { x: 858, y: 327, w: 232, h: 175 }
   };
 
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
-      const coords = slotCoords[apt.slot] || { x: 162 + idx * 150, y: 160, w: 200, h: 180 };
+      const coords = slotCoords[apt.slot] || { x: 162 + idx * 150, y: 145, w: 200, h: 180 };
       return buildApartmentBoxHTML(proj, floor, apt, coords);
     })
     .join("");
 
   return `
-    <!-- Sol Üst Ödeme Planı & Logo -->
-    <div class="fp-el" style="left:12px;top:14px;width:310px;height:34px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.86rem;font-weight:800;">
-      ${proj.paymentPlan}
-    </div>
-    <img src="assets/p1_image1.png?v=15" alt="Demirtürk Yapı Karasu" style="position:absolute;left:18px;top:62px;width:270px;height:48px;object-fit:contain;" />
-
-    <!-- Orta Üst Proje Başlığı & Konum -->
-    <div class="fp-el" style="left:450px;top:14px;width:340px;height:38px;font-size:1.45rem;font-weight:800;color:#23353f;">
-      ${proj.name}
-    </div>
-    <div class="fp-el" style="left:450px;top:54px;width:340px;height:68px;font-size:0.98rem;font-weight:700;color:#334155;">
-      <div>${proj.neighborhood} • ${proj.adaParsel}</div>
-      <div style="color:#8c3b3b;margin-top:3px;font-weight:800;">Teslim: ${proj.deliveryDate}</div>
-    </div>
-
-    <!-- Sağ Üst Pusula -->
-    <div class="fp-compass-box" style="left:1069px;top:35px;width:91px;height:91px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1091px;top:12px;">KUZEY</div>
-    <div class="fp-compass-dir" style="left:1089px;top:128px;">GÜNEY</div>
-    <div class="fp-compass-dir" style="left:1032px;top:70px;">BATI</div>
-    <div class="fp-compass-dir" style="left:1162px;top:70px;">DOĞU</div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
     <!-- En Sol Dikey Havuz -->
-    <div class="fp-pool" style="left:6px;top:165px;width:135px;height:348px;">
+    <div class="fp-pool" style="left:12px;top:148px;width:135px;height:352px;">
       HAVUZ
     </div>
 
@@ -2142,27 +2078,22 @@ function renderTemplateAsel1(proj, floor) {
     ${aptsHTML}
 
     <!-- B Giriş & A Giriş Yürüyüş Yolu ve Etiketler -->
-    <div style="position:absolute;left:376px;top:517px;width:22px;height:75px;background:#64748b;"></div>
-    <div class="fp-el" style="left:330px;top:595px;width:115px;height:32px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.92rem;font-weight:800;">
+    <div style="position:absolute;left:376px;top:502px;width:22px;height:66px;background:#64748b;"></div>
+    <div class="fp-el" style="left:330px;top:572px;width:115px;height:32px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.92rem;font-weight:800;">
       B GİRİŞ
     </div>
 
-    <div style="position:absolute;left:848px;top:517px;width:22px;height:75px;background:#64748b;"></div>
-    <div class="fp-el" style="left:800px;top:595px;width:115px;height:32px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.92rem;font-weight:800;">
+    <div style="position:absolute;left:848px;top:502px;width:22px;height:66px;background:#64748b;"></div>
+    <div class="fp-el" style="left:800px;top:572px;width:115px;height:32px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.92rem;font-weight:800;">
       A GİRİŞ
     </div>
 
     <!-- Sağ YOL & SİTE GİRİŞİ -->
-    <div class="fp-el" style="left:1112px;top:160px;width:95px;height:357px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1.1rem;font-weight:800;color:#475569;letter-spacing:0.08em;">
+    <div class="fp-el" style="left:1110px;top:145px;width:92px;height:357px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1.1rem;font-weight:800;color:#475569;letter-spacing:0.08em;">
       YOL
     </div>
-    <div class="fp-el" style="left:1085px;top:580px;width:122px;height:40px;background:#334854;color:#f8fafc;border-radius:6px;font-size:0.86rem;font-weight:800;">
+    <div class="fp-el" style="left:1085px;top:562px;width:118px;height:38px;background:#334854;color:#f8fafc;border-radius:6px;font-size:0.86rem;font-weight:800;">
       SİTE GİRİŞİ
-    </div>
-
-    <!-- Sol Alt Kat Etiketi -->
-    <div class="fp-el" style="left:12px;top:625px;width:165px;height:44px;background:#23353f;color:#dfc28d;border-radius:8px;font-size:1.12rem;font-weight:800;letter-spacing:0.04em;">
-      ${floor.name}
     </div>
   `;
 }
@@ -2171,50 +2102,29 @@ function renderTemplateAsel1(proj, floor) {
 // ŞABLON 5: ALMİNA 2 SİTESİ (Aşağıincilli Mh. 996 Ada / 12 Parsel)
 // ------------------------------------------------------------
 function renderTemplateAlmina2(proj, floor) {
+  const ox = 85;
   const slotCoords = {
-    "b-1": { x: 187, y: 225, w: 194, h: 130 },
-    "b-2": { x: 382, y: 225, w: 194, h: 130 },
-    "b-3": { x: 576, y: 225, w: 194, h: 130 },
-    "a-top": { x: 770, y: 225, w: 194, h: 130 },
-    "a-bottom-left": { x: 770, y: 355, w: 98, h: 200 },
-    "a-bottom-right": { x: 868, y: 355, w: 96, h: 200 }
+    "b-1": { x: ox + 187, y: 205, w: 194, h: 130 },
+    "b-2": { x: ox + 382, y: 205, w: 194, h: 130 },
+    "b-3": { x: ox + 576, y: 205, w: 194, h: 130 },
+    "a-top": { x: ox + 770, y: 205, w: 194, h: 130 },
+    "a-bottom-left": { x: ox + 770, y: 335, w: 98, h: 200 },
+    "a-bottom-right": { x: ox + 868, y: 335, w: 96, h: 200 }
   };
 
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
-      const coords = slotCoords[apt.slot] || { x: 187 + idx * 160, y: 225, w: 155, h: 130 };
+      const coords = slotCoords[apt.slot] || { x: ox + 187 + idx * 160, y: 205, w: 155, h: 130 };
       const extraClass = apt.slot === "a-bottom-left" || apt.slot === "a-bottom-right" ? "med-apt" : "";
       return buildApartmentBoxHTML(proj, floor, apt, coords, extraClass);
     })
     .join("");
 
   return `
-    <!-- Sol Üst Proje Başlığı & Ada Parsel -->
-    <div class="fp-el" style="left:25px;top:20px;width:275px;height:40px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:1.1rem;font-weight:800;border-bottom:3px solid #c8a668;">
-      ${proj.name}
-    </div>
-    <div class="fp-el" style="left:25px;top:66px;width:275px;height:54px;font-size:0.98rem;font-weight:800;color:#23353f;align-items:flex-start;">
-      <div>${proj.neighborhood}</div>
-      <div style="color:#87662c;">${proj.adaParsel}</div>
-    </div>
-
-    <!-- Orta Üst Logo & Teslim Tarihi -->
-    <img src="assets/p1_image1.png?v=15" alt="Demirtürk Yapı Karasu" style="position:absolute;left:445px;top:22px;width:320px;height:56px;object-fit:contain;" />
-    <div class="fp-el" style="left:458px;top:90px;width:287px;height:36px;font-size:1.18rem;font-weight:800;color:#8c3b3b;background:#f9ecec;border:1px solid #e2c2c2;border-radius:8px;">
-      Teslim: ${proj.deliveryDate}
-    </div>
-
-    <!-- Sağ Üst Pusula -->
-    <div class="fp-compass-box" style="left:1043px;top:35px;width:115px;height:114px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1080px;top:12px;">Kuzey</div>
-    <div class="fp-compass-dir" style="left:1080px;top:150px;">Güney</div>
-    <div class="fp-compass-dir" style="left:1162px;top:82px;">Doğu</div>
-    <div class="fp-compass-dir" style="left:1000px;top:82px;">Batı</div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
     <!-- Sol Havuz -->
-    <div class="fp-pool" style="left:28px;top:225px;width:146px;height:130px;font-size:1.25rem;">
+    <div class="fp-pool" style="left:${ox + 28}px;top:205px;width:146px;height:130px;font-size:1.25rem;">
       HAVUZ
     </div>
 
@@ -2222,21 +2132,11 @@ function renderTemplateAlmina2(proj, floor) {
     ${aptsHTML}
 
     <!-- B Giriş & A Giriş Etiketleri -->
-    <div class="fp-el" style="left:335px;top:368px;width:110px;height:38px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.95rem;font-weight:800;">
+    <div class="fp-el" style="left:${ox + 335}px;top:348px;width:110px;height:38px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.95rem;font-weight:800;">
       ↑ B Giriş
     </div>
-    <div class="fp-el" style="left:648px;top:368px;width:110px;height:38px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.95rem;font-weight:800;">
+    <div class="fp-el" style="left:${ox + 648}px;top:348px;width:110px;height:38px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.95rem;font-weight:800;">
       A Giriş →
-    </div>
-
-    <!-- Sol Alt Kat Etiketi -->
-    <div class="fp-el" style="left:16px;top:590px;width:195px;height:42px;background:#23353f;color:#dfc28d;border-radius:8px;font-size:1.1rem;font-weight:800;letter-spacing:0.04em;">
-      ${floor.name}
-    </div>
-
-    <!-- Alt Peşinat / Vade Şeridi -->
-    <div class="fp-el" style="left:0;top:641px;width:1219px;height:45px;background:#23353f;color:#f8fafc;font-size:1.2rem;font-weight:800;border-top:3px solid #c8a668;">
-      ${proj.paymentPlan}
     </div>
   `;
 }
@@ -2245,89 +2145,64 @@ function renderTemplateAlmina2(proj, floor) {
 // ŞABLON 6: YENİŞEHİR 3. ETAP (Aşağıincilli Mh. 1326 Ada 3 Parsel - 4 Blok Site)
 // ------------------------------------------------------------
 function renderTemplateYenisehir3(proj, floor) {
+  // Orijinal Y:[96..679] aralığını orta simülasyon sahnesine (Y:[96..620]) sığdırmak için dikey ölçekleme
+  const mapY = (y) => Math.round(96 + (y - 96) * 0.89);
+  const mapH = (h) => Math.max(20, Math.round(h * 0.89));
+
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
+      const rawX = apt.x ?? 248 + (idx % 7) * 104;
+      const rawY = apt.y ?? 129 + Math.floor(idx / 7) * 76;
+      const rawW = apt.w ?? 104;
+      const rawH = apt.h ?? 76;
       const coords = {
-        x: apt.x ?? 248 + (idx % 7) * 104,
-        y: apt.y ?? 129 + Math.floor(idx / 7) * 76,
-        w: apt.w ?? 104,
-        h: apt.h ?? 76
+        x: rawX,
+        y: mapY(rawY),
+        w: rawW,
+        h: mapH(rawH)
       };
       return buildApartmentBoxHTML(proj, floor, apt, coords, "compact-apt");
     })
     .join("");
 
   return `
-    <!-- Sol Üst Logo -->
-    <img src="assets/p1_image1.png?v=15" alt="Demirtürk Yapı Karasu" style="position:absolute;left:16px;top:14px;width:205px;height:38px;object-fit:contain;" />
-
-    <!-- Üst Orta Başlık & Özellikler -->
-    <div class="fp-el" style="left:260px;top:10px;width:695px;height:34px;font-size:1.4rem;font-weight:800;color:#23353f;letter-spacing:0.04em;">
-      ${proj.name}
-    </div>
-    <div class="fp-el" style="left:220px;top:44px;width:775px;height:26px;font-size:0.76rem;font-weight:800;color:#23353f;background:#efede7;border-radius:99px;border:1px solid #cbc5b8;">
-      ${proj.subtitle}
-    </div>
-    <div class="fp-el" style="left:770px;top:76px;width:205px;height:26px;font-size:0.9rem;font-weight:800;color:#8c3b3b;background:#f9ecec;border:1px solid #e2c2c2;border-radius:6px;">
-      Teslim: ${proj.deliveryDate}
-    </div>
-
-    <!-- Sağ Üst Pusula -->
-    <div class="fp-compass-box" style="left:1055px;top:24px;width:85px;height:85px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1092px;top:5px;">K</div>
-    <div class="fp-compass-dir" style="left:1145px;top:56px;">D</div>
-    <div class="fp-compass-dir" style="left:1092px;top:110px;">G</div>
-    <div class="fp-compass-dir" style="left:1038px;top:56px;">B</div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
     <!-- BLOK BAŞLIKLARI -->
-    <div class="fp-el" style="left:67px;top:176px;width:116px;height:28px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.84rem;font-weight:800;letter-spacing:0.04em;">A BLOK</div>
-    <div class="fp-el" style="left:548px;top:96px;width:116px;height:28px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.84rem;font-weight:800;letter-spacing:0.04em;">B BLOK</div>
-    <div class="fp-el" style="left:551px;top:651px;width:116px;height:28px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.84rem;font-weight:800;letter-spacing:0.04em;">C BLOK</div>
-    <div class="fp-el" style="left:1036px;top:156px;width:116px;height:28px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.84rem;font-weight:800;letter-spacing:0.04em;">D BLOK</div>
+    <div class="fp-el" style="left:67px;top:${mapY(176)}px;width:116px;height:25px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.82rem;font-weight:800;letter-spacing:0.04em;">A BLOK</div>
+    <div class="fp-el" style="left:548px;top:${mapY(96)}px;width:116px;height:25px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.82rem;font-weight:800;letter-spacing:0.04em;">B BLOK</div>
+    <div class="fp-el" style="left:551px;top:${mapY(651)}px;width:116px;height:25px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.82rem;font-weight:800;letter-spacing:0.04em;">C BLOK</div>
+    <div class="fp-el" style="left:1036px;top:${mapY(156)}px;width:116px;height:25px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:0.82rem;font-weight:800;letter-spacing:0.04em;">D BLOK</div>
 
     <!-- ORTA AVLU: BÜYÜK HAVUZ, ÇOCUK HAVUZU ve KAFETERYA -->
-    <div class="fp-pool" style="left:310px;top:315px;width:235px;height:138px;font-size:1.1rem;flex-direction:column;">
+    <div class="fp-pool" style="left:310px;top:${mapY(315)}px;width:235px;height:${mapH(138)}px;font-size:1.05rem;flex-direction:column;">
       <span>BÜYÜK HAVUZ</span>
     </div>
-    <div class="fp-pool" style="left:558px;top:315px;width:135px;height:138px;font-size:0.9rem;flex-direction:column;">
+    <div class="fp-pool" style="left:558px;top:${mapY(315)}px;width:135px;height:${mapH(138)}px;font-size:0.88rem;flex-direction:column;">
       <span>ÇOCUK</span>
       <span>HAVUZU</span>
     </div>
-    <div class="fp-el" style="left:708px;top:315px;width:130px;height:138px;background:#fbf6eb;border:1.5px solid #c89d54;border-radius:8px;font-size:0.84rem;font-weight:800;color:#5c3f14;letter-spacing:0.04em;">
+    <div class="fp-el" style="left:708px;top:${mapY(315)}px;width:130px;height:${mapH(138)}px;background:#fbf6eb;border:1.5px solid #c89d54;border-radius:8px;font-size:0.82rem;font-weight:800;color:#5c3f14;letter-spacing:0.04em;">
       SOSYAL TESİS / KAFE
     </div>
 
     <!-- BLOK GİRİŞ ETİKETLERİ -->
     <!-- A Blok Girişleri -->
-    <div class="fp-el" style="left:231px;top:272px;width:54px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">B Giriş</div>
-    <div class="fp-el" style="left:231px;top:424px;width:54px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
+    <div class="fp-el" style="left:231px;top:${mapY(272)}px;width:54px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">B Giriş</div>
+    <div class="fp-el" style="left:231px;top:${mapY(424)}px;width:54px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
     <!-- B Blok Girişleri -->
-    <div class="fp-el" style="left:322px;top:105px;width:62px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">C Giriş</div>
-    <div class="fp-el" style="left:530px;top:105px;width:62px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;display:none;">B Giriş</div>
-    <div class="fp-el" style="left:734px;top:105px;width:62px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
+    <div class="fp-el" style="left:322px;top:${mapY(105)}px;width:62px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">C Giriş</div>
+    <div class="fp-el" style="left:734px;top:${mapY(105)}px;width:62px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
     <!-- C Blok Girişleri -->
-    <div class="fp-el" style="left:317px;top:468px;width:62px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">C Giriş</div>
-    <div class="fp-el" style="left:524px;top:468px;width:62px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">B Giriş</div>
-    <div class="fp-el" style="left:729px;top:468px;width:62px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
+    <div class="fp-el" style="left:317px;top:${mapY(468)}px;width:62px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">C Giriş</div>
+    <div class="fp-el" style="left:524px;top:${mapY(468)}px;width:62px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">B Giriş</div>
+    <div class="fp-el" style="left:729px;top:${mapY(468)}px;width:62px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
     <!-- D Blok Girişleri -->
-    <div class="fp-el" style="left:932px;top:328px;width:54px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">B Giriş</div>
-    <div class="fp-el" style="left:932px;top:479px;width:54px;height:22px;background:#334854;color:#f8fafc;font-size:0.65rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
+    <div class="fp-el" style="left:932px;top:${mapY(328)}px;width:54px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">B Giriş</div>
+    <div class="fp-el" style="left:932px;top:${mapY(479)}px;width:54px;height:20px;background:#334854;color:#f8fafc;font-size:0.64rem;font-weight:700;border-radius:4px;z-index:18;">A Giriş</div>
 
     <!-- Daireler (50 Daire) -->
     ${aptsHTML}
-
-    <!-- Alt Bilgi Kutuları (Kat Adı, Ödeme Planı, Konum) -->
-    <div class="fp-el" style="left:21px;top:608px;width:208px;height:38px;background:#23353f;color:#dfc28d;border-radius:6px;font-size:1.05rem;font-weight:800;letter-spacing:0.04em;">
-      ${floor.name}
-    </div>
-    <div class="fp-el" style="left:245px;top:650px;width:290px;height:30px;background:#efede7;color:#23353f;border:1.5px solid #cbc5b8;border-radius:6px;font-size:0.78rem;font-weight:800;">
-      ${proj.paymentPlan}
-    </div>
-    <div class="fp-el" style="left:692px;top:650px;width:274px;height:30px;background:#efede7;color:#23353f;border:1.5px solid #cbc5b8;border-radius:6px;font-size:0.78rem;font-weight:800;">
-      ${proj.neighborhood} • ${proj.adaParsel}
-    </div>
   `;
 }
 
@@ -2335,77 +2210,54 @@ function renderTemplateYenisehir3(proj, floor) {
 // ŞABLON 7: KARASU DEMİRTÜRK İNŞAAT [1. ETAP] (1324 Ada 1 Parsel)
 // ------------------------------------------------------------
 function renderTemplateEtap1(proj, floor) {
-  // Orijinal 914x686 slaytı 1219x686 tuvalde ortalamak için +150px X ofseti
   const ox = 150;
   const slotCoords = {
     // A BLOK (Sol Kanat)
-    "a-top-1": { x: ox + 50, y: 193, w: 114, h: 93 },
-    "a-top-2": { x: ox + 164, y: 193, w: 114, h: 93 },
-    "a-top-3": { x: ox + 279, y: 193, w: 114, h: 93 },
-    "a-mid-1": { x: ox + 118, y: 286, w: 102, h: 143 },
-    "a-mid-2": { x: ox + 220, y: 286, w: 102, h: 143 },
-    "a-bot-1": { x: ox + 50, y: 429, w: 114, h: 93 },
-    "a-bot-2": { x: ox + 164, y: 429, w: 114, h: 93 },
-    "a-bot-3": { x: ox + 279, y: 429, w: 114, h: 93 },
+    "a-top-1": { x: ox + 50, y: 175, w: 114, h: 93 },
+    "a-top-2": { x: ox + 164, y: 175, w: 114, h: 93 },
+    "a-top-3": { x: ox + 279, y: 175, w: 114, h: 93 },
+    "a-mid-1": { x: ox + 118, y: 268, w: 102, h: 143 },
+    "a-mid-2": { x: ox + 220, y: 268, w: 102, h: 143 },
+    "a-bot-1": { x: ox + 50, y: 411, w: 114, h: 93 },
+    "a-bot-2": { x: ox + 164, y: 411, w: 114, h: 93 },
+    "a-bot-3": { x: ox + 279, y: 411, w: 114, h: 93 },
     // B BLOK (Sağ Kanat)
-    "b-top-1": { x: ox + 536, y: 193, w: 114, h: 93 },
-    "b-top-2": { x: ox + 650, y: 193, w: 114, h: 93 },
-    "b-top-3": { x: ox + 764, y: 193, w: 114, h: 93 },
-    "b-mid-1": { x: ox + 602, y: 286, w: 94, h: 143 },
-    "b-mid-2": { x: ox + 696, y: 286, w: 94, h: 143 },
-    "b-bot-1": { x: ox + 536, y: 429, w: 114, h: 93 },
-    "b-bot-2": { x: ox + 650, y: 429, w: 114, h: 93 },
-    "b-bot-3": { x: ox + 764, y: 429, w: 114, h: 93 }
+    "b-top-1": { x: ox + 536, y: 175, w: 114, h: 93 },
+    "b-top-2": { x: ox + 650, y: 175, w: 114, h: 93 },
+    "b-top-3": { x: ox + 764, y: 175, w: 114, h: 93 },
+    "b-mid-1": { x: ox + 602, y: 268, w: 94, h: 143 },
+    "b-mid-2": { x: ox + 696, y: 268, w: 94, h: 143 },
+    "b-bot-1": { x: ox + 536, y: 411, w: 114, h: 93 },
+    "b-bot-2": { x: ox + 650, y: 411, w: 114, h: 93 },
+    "b-bot-3": { x: ox + 764, y: 411, w: 114, h: 93 }
   };
 
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
-      const coords = slotCoords[apt.slot] || { x: ox + 50 + (idx % 4) * 115, y: 193 + Math.floor(idx / 4) * 100, w: 114, h: 93 };
+      const coords = slotCoords[apt.slot] || { x: ox + 50 + (idx % 4) * 115, y: 175 + Math.floor(idx / 4) * 100, w: 114, h: 93 };
       return buildApartmentBoxHTML(proj, floor, apt, coords, "med-apt");
     })
     .join("");
 
   return `
-    <!-- Sol Üst Logo -->
-    <img src="assets/p2_image1.png?v=15" alt="Demirtürk Yapı İnşaat" style="position:absolute;left:14px;top:16px;width:124px;height:82px;object-fit:contain;" />
-
-    <!-- Üst Başlık Bandı -->
-    <div class="fp-el" style="left:${ox}px;top:14px;width:914px;height:88px;background:#f8f6f1;border:1.5px solid #d5cfc2;border-top:4px solid #285e54;border-radius:10px;">
-      <div style="font-size:1.25rem;font-weight:800;color:#23353f;">${proj.name}</div>
-      <div style="font-size:0.94rem;font-weight:700;color:#87662c;margin-top:2px;">${proj.neighborhood} • ${proj.adaParsel}</div>
-      <div style="font-size:0.96rem;font-weight:800;color:#8c3b3b;margin-top:2px;">${floor.name} — Teslim: ${proj.deliveryDate}</div>
-    </div>
-
-    <!-- Pusula -->
-    <div class="fp-compass-box" style="left:1085px;top:35px;width:85px;height:85px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1108px;top:14px;">KUZEY</div>
-    <div class="fp-compass-dir" style="left:1174px;top:68px;">DOĞU</div>
-    <div class="fp-compass-dir" style="left:1108px;top:125px;">GÜNEY</div>
-    <div class="fp-compass-dir" style="left:1045px;top:68px;">BATI</div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
     <!-- YOL Şeritleri -->
-    <div class="fp-el" style="left:${ox - 10}px;top:115px;width:48px;height:520px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
-    <div class="fp-el" style="left:${ox + 38}px;top:115px;width:850px;height:44px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
-    <div class="fp-el" style="left:${ox + 38}px;top:591px;width:850px;height:44px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
+    <div class="fp-el" style="left:${ox - 10}px;top:110px;width:48px;height:498px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
+    <div class="fp-el" style="left:${ox + 38}px;top:110px;width:850px;height:40px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
+    <div class="fp-el" style="left:${ox + 38}px;top:568px;width:850px;height:40px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
 
     <!-- A BLOK ve B BLOK Giriş Etiketleri -->
-    <div class="fp-el" style="left:${ox + 42}px;top:310px;width:72px;height:52px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">A BLOK<br/>GİRİŞİ</div>
-    <div class="fp-el" style="left:${ox + 796}px;top:310px;width:84px;height:52px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">B BLOK<br/>GİRİŞİ</div>
+    <div class="fp-el" style="left:${ox + 42}px;top:292px;width:72px;height:52px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">A BLOK<br/>GİRİŞİ</div>
+    <div class="fp-el" style="left:${ox + 796}px;top:292px;width:84px;height:52px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">B BLOK<br/>GİRİŞİ</div>
 
     <!-- Orta HAVUZ -->
-    <div class="fp-pool" style="left:${ox + 326}px;top:312px;width:272px;height:100px;font-size:1.3rem;">
+    <div class="fp-pool" style="left:${ox + 326}px;top:294px;width:272px;height:100px;font-size:1.3rem;">
       HAVUZ
     </div>
 
     <!-- Daireler (16 Daire) -->
     ${aptsHTML}
-
-    <!-- Alt Peşinat & Vade Şeridi -->
-    <div class="fp-el" style="left:${ox + 38}px;top:640px;width:850px;height:40px;background:#23353f;color:#dfc28d;border-radius:8px;font-size:1.08rem;font-weight:800;">
-      ${proj.paymentPlan}
-    </div>
   `;
 }
 
@@ -2415,67 +2267,47 @@ function renderTemplateEtap1(proj, floor) {
 function renderTemplateEtap2(proj, floor) {
   const slotCoords = {
     // A BLOK (Sol Kanat - 8 Daire)
-    "a-top-1": { x: 138, y: 233, w: 120, h: 93 },
-    "a-top-2": { x: 258, y: 233, w: 120, h: 93 },
-    "a-top-3": { x: 378, y: 233, w: 120, h: 93 },
-    "a-mid-1": { x: 195, y: 326, w: 120, h: 95 },
-    "a-mid-2": { x: 315, y: 326, w: 120, h: 95 },
-    "a-bot-1": { x: 144, y: 421, w: 120, h: 93 },
-    "a-bot-2": { x: 264, y: 421, w: 120, h: 93 },
-    "a-bot-3": { x: 384, y: 421, w: 120, h: 93 },
+    "a-top-1": { x: 138, y: 215, w: 120, h: 90 },
+    "a-top-2": { x: 258, y: 215, w: 120, h: 90 },
+    "a-top-3": { x: 378, y: 215, w: 120, h: 90 },
+    "a-mid-1": { x: 195, y: 305, w: 120, h: 92 },
+    "a-mid-2": { x: 315, y: 305, w: 120, h: 92 },
+    "a-bot-1": { x: 144, y: 397, w: 120, h: 90 },
+    "a-bot-2": { x: 264, y: 397, w: 120, h: 90 },
+    "a-bot-3": { x: 384, y: 397, w: 120, h: 90 },
     // B BLOK (Sağ Kanat - 2 Sütun x 4 Satır = 8 Daire)
-    "b-r1-c1": { x: 723, y: 195, w: 115, h: 92 },
-    "b-r1-c2": { x: 838, y: 195, w: 115, h: 92 },
-    "b-r2-c1": { x: 723, y: 288, w: 115, h: 92 },
-    "b-r2-c2": { x: 838, y: 288, w: 115, h: 92 },
-    "b-r3-c1": { x: 723, y: 380, w: 115, h: 92 },
-    "b-r3-c2": { x: 838, y: 380, w: 115, h: 92 },
-    "b-r4-c1": { x: 723, y: 472, w: 115, h: 92 },
-    "b-r4-c2": { x: 838, y: 472, w: 115, h: 92 }
+    "b-r1-c1": { x: 723, y: 178, w: 115, h: 88 },
+    "b-r1-c2": { x: 838, y: 178, w: 115, h: 88 },
+    "b-r2-c1": { x: 723, y: 267, w: 115, h: 88 },
+    "b-r2-c2": { x: 838, y: 267, w: 115, h: 88 },
+    "b-r3-c1": { x: 723, y: 356, w: 115, h: 88 },
+    "b-r3-c2": { x: 838, y: 356, w: 115, h: 88 },
+    "b-r4-c1": { x: 723, y: 445, w: 115, h: 88 },
+    "b-r4-c2": { x: 838, y: 445, w: 115, h: 88 }
   };
 
   const aptsHTML = floor.apartments
     .map((apt, idx) => {
-      const coords = slotCoords[apt.slot] || { x: 140 + (idx % 4) * 120, y: 200 + Math.floor(idx / 4) * 95, w: 115, h: 92 };
+      const coords = slotCoords[apt.slot] || { x: 140 + (idx % 4) * 120, y: 185 + Math.floor(idx / 4) * 90, w: 115, h: 88 };
       return buildApartmentBoxHTML(proj, floor, apt, coords, "med-apt");
     })
     .join("");
 
   return `
-    <!-- Sol Üst Ödeme Kutusu -->
-    <div class="fp-el" style="left:12px;top:12px;width:320px;height:64px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.88rem;font-weight:800;padding:6px;border-bottom:3px solid #c8a668;">
-      PROJEMİZ 24 AY ELDEN TAKSİTLİ<br/><span style="color:#dfc28d;font-size:1.02rem;">2.000.000₺ PEŞİNAT</span>
-    </div>
-
-    <!-- Üst Orta Proje Başlığı & Logo -->
-    <div class="fp-el" style="left:345px;top:10px;width:670px;height:74px;background:#f8f6f1;border:1.5px solid #d5cfc2;border-top:4px solid #285e54;border-radius:10px;">
-      <img src="assets/demirturk_logo.png?v=15" alt="Demirtürk Yapı" style="position:absolute;left:14px;top:9px;width:54px;height:54px;object-fit:contain;" />
-      <div style="font-size:1.2rem;font-weight:800;color:#23353f;">${proj.name}</div>
-      <div style="font-size:0.92rem;font-weight:700;color:#87662c;">${proj.neighborhood} • ${proj.adaParsel}</div>
-      <div style="font-size:0.95rem;font-weight:800;color:#8c3b3b;">${floor.name} — Teslim: ${proj.deliveryDate}</div>
-    </div>
-
-    <!-- Sağ Üst Pusula -->
-    <div class="fp-compass-box" style="left:1085px;top:32px;width:78px;height:78px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1104px;top:12px;">KUZEY</div>
-    <div class="fp-compass-dir" style="left:1166px;top:62px;">DOĞU</div>
-    <div class="fp-compass-dir" style="left:1104px;top:112px;">GÜNEY</div>
-    <div class="fp-compass-dir" style="left:1045px;top:62px;">BATI</div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
     <!-- Çevreleyen YOL Şeritleri -->
-    <div class="fp-el" style="left:48px;top:92px;width:48px;height:542px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
-    <div class="fp-el" style="left:96px;top:92px;width:946px;height:44px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
-    <div class="fp-el" style="left:1042px;top:92px;width:54px;height:542px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
-    <div class="fp-el" style="left:96px;top:590px;width:946px;height:44px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
+    <div class="fp-el" style="left:48px;top:110px;width:48px;height:498px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
+    <div class="fp-el" style="left:96px;top:110px;width:946px;height:40px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
+    <div class="fp-el" style="left:1042px;top:110px;width:54px;height:498px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
+    <div class="fp-el" style="left:96px;top:568px;width:946px;height:40px;background:#e6e3da;border:1.5px solid #b8b2a4;border-radius:6px;font-size:1rem;font-weight:800;color:#475569;">YOL</div>
 
     <!-- A BLOK ve B BLOK Giriş Etiketleri -->
-    <div class="fp-el" style="left:102px;top:352px;width:86px;height:44px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">A BLOK<br/>GİRİŞİ</div>
-    <div class="fp-el" style="left:958px;top:362px;width:80px;height:44px;background:#334854;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">B BLOK<br/>GİRİŞİ</div>
+    <div class="fp-el" style="left:102px;top:330px;width:86px;height:44px;background:#23353f;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">A BLOK<br/>GİRİŞİ</div>
+    <div class="fp-el" style="left:958px;top:340px;width:80px;height:44px;background:#334854;color:#f8fafc;border-radius:6px;font-size:0.74rem;font-weight:800;">B BLOK<br/>GİRİŞİ</div>
 
     <!-- Orta HAVUZ -->
-    <div class="fp-pool" style="left:450px;top:324px;width:255px;height:98px;font-size:1.3rem;">
+    <div class="fp-pool" style="left:450px;top:304px;width:255px;height:98px;font-size:1.3rem;">
       HAVUZ
     </div>
 
@@ -2484,12 +2316,10 @@ function renderTemplateEtap2(proj, floor) {
   `;
 }
 
-
 // ------------------------------------------------------------
 // ŞABLON 9: Yeni Eklenen Projeler İçin Dinamik Mimari Kat Planı
 // ------------------------------------------------------------
 function renderTemplateCustom(proj, floor) {
-  // Bloklara göre grupla
   const groups = {};
   floor.apartments.forEach((apt) => {
     const b = apt.block || "A Giriş";
@@ -2499,8 +2329,8 @@ function renderTemplateCustom(proj, floor) {
 
   const blockNames = Object.keys(groups);
   const blockCount = blockNames.length || 1;
-  const areaLeft = 180;
-  const areaWidth = 860;
+  const areaLeft = 185;
+  const areaWidth = 980;
   const blockGap = 30;
   const blockWidth = Math.floor((areaWidth - (blockCount - 1) * blockGap) / blockCount);
 
@@ -2511,14 +2341,14 @@ function renderTemplateCustom(proj, floor) {
     const cols = apts.length <= 2 ? apts.length : 2;
     const rows = Math.ceil(apts.length / cols);
     const cellW = Math.floor((blockWidth - 20) / cols);
-    const cellH = Math.min(165, Math.floor(330 / Math.max(1, rows)));
+    const cellH = Math.min(165, Math.floor(340 / Math.max(1, rows)));
 
     apts.forEach((apt, aIdx) => {
       const c = aIdx % cols;
       const r = Math.floor(aIdx / cols);
       const coords = {
         x: bx + 10 + c * cellW,
-        y: 185 + r * (cellH + 8),
+        y: 165 + r * (cellH + 8),
         w: cellW - 8,
         h: cellH
       };
@@ -2526,47 +2356,20 @@ function renderTemplateCustom(proj, floor) {
     });
 
     blocksHTML += `
-      <div class="fp-el" style="left:${bx + blockWidth / 2 - 65}px;top:545px;width:130px;height:36px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.96rem;font-weight:800;">
+      <div class="fp-el" style="left:${bx + blockWidth / 2 - 65}px;top:535px;width:130px;height:36px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:0.96rem;font-weight:800;">
         ${bName}
       </div>
     `;
   });
 
   return `
-    <div class="fp-el" style="left:20px;top:20px;width:280px;height:44px;background:#23353f;color:#f8fafc;border-radius:8px;font-size:1.06rem;font-weight:800;border-bottom:3px solid #c8a668;">
-      ${proj.name}
-    </div>
-    <div class="fp-el" style="left:20px;top:72px;width:280px;height:52px;font-size:0.95rem;font-weight:800;color:#23353f;align-items:flex-start;">
-      <div>${proj.neighborhood}</div>
-      <div style="color:#87662c;">${proj.adaParsel}</div>
-    </div>
+    ${renderUnifiedSheetChrome(proj, floor, { top: "KUZEY", bottom: "GÜNEY", left: "BATI", right: "DOĞU" })}
 
-    <img src="assets/p1_image1.png?v=15" alt="Demirtürk Yapı Karasu" style="position:absolute;left:450px;top:20px;width:310px;height:54px;object-fit:contain;" />
-    <div class="fp-el" style="left:450px;top:82px;width:310px;height:32px;font-size:1.12rem;font-weight:800;color:#8c3b3b;background:#f9ecec;border:1px solid #e2c2c2;border-radius:8px;">
-      Teslim: ${proj.deliveryDate}
-    </div>
-
-    <div class="fp-compass-box" style="left:1060px;top:35px;width:95px;height:95px;">
-      <img src="assets/p1_image2.png" alt="Pusula" />
-    </div>
-    <div class="fp-compass-dir" style="left:1088px;top:12px;">Kuzey</div>
-    <div class="fp-compass-dir" style="left:1086px;top:134px;">Güney</div>
-    <div class="fp-compass-dir" style="left:1022px;top:72px;">Batı</div>
-    <div class="fp-compass-dir" style="left:1160px;top:72px;">Doğu</div>
-
-    <div class="fp-pool" style="left:20px;top:185px;width:140px;height:330px;">
+    <div class="fp-pool" style="left:24px;top:165px;width:140px;height:340px;">
       HAVUZ
     </div>
 
     ${blocksHTML}
-
-    <div class="fp-el" style="left:1060px;top:545px;width:140px;height:44px;background:#23353f;color:#dfc28d;border-radius:8px;font-size:1.1rem;font-weight:800;">
-      ${floor.name}
-    </div>
-
-    <div class="fp-el" style="left:0;top:625px;width:1219px;height:61px;background:#23353f;color:#f8fafc;font-size:1.22rem;font-weight:800;border-top:3px solid #c8a668;">
-      ${proj.paymentPlan}
-    </div>
   `;
 }
 
