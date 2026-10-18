@@ -261,50 +261,56 @@ async function decodeCloudOverlayBrowser(overlayStr) {
       jsonStr = new TextDecoder().decode(bytes);
     }
     if (!jsonStr) return null;
-    const ov = JSON.parse(jsonStr);
-    const baseProjects = Array.isArray(window.INITIAL_PROJECTS)
-      ? JSON.parse(JSON.stringify(window.INITIAL_PROJECTS))
-      : JSON.parse(JSON.stringify(state.projects || []));
+    const c = JSON.parse(jsonStr);
+    if (!c || typeof c !== "object") return null;
 
-    if (ov.aptMap) {
-      baseProjects.forEach((p) => {
-        if (ov.projMeta && ov.projMeta[p.id]) {
-          Object.assign(p, ov.projMeta[p.id]);
+    const deletedSet = new Set(Array.isArray(c.dp) ? c.dp : []);
+    const baseSource = Array.isArray(window.INITIAL_PROJECTS)
+      ? window.INITIAL_PROJECTS
+      : state.projects || [];
+    const baseProjects = JSON.parse(JSON.stringify(baseSource)).filter((p) => !deletedSet.has(p.id));
+
+    for (const p of baseProjects) {
+      if (c.pm && c.pm[p.id]) {
+        Object.assign(p, c.pm[p.id]);
+      }
+      for (const f of p.floors || []) {
+        for (const a of f.apartments || []) {
+          if (c.d && Array.isArray(c.d[a.id])) {
+            const [st, pr, num, rm, bl] = c.d[a.id];
+            if (st) a.status = st;
+            if (pr !== undefined) a.price = Number(pr);
+            if (num) a.number = num;
+            if (rm) a.rooms = rm;
+            if (bl) a.block = bl;
+          }
         }
-        (p.floors || []).forEach((f) => {
-          (f.apartments || []).forEach((a) => {
-            const entry = ov.aptMap[`${p.id}|${f.id}|${a.id}`];
-            if (Array.isArray(entry)) {
-              if (entry[0]) a.status = entry[0];
-              if (entry[1] !== undefined) a.price = Number(entry[1]);
-              if (entry[2]) a.number = entry[2];
-              if (entry[3]) a.rooms = entry[3];
-              if (entry[4]) a.block = entry[4];
+        const extraKey = `${p.id}__${f.id}`;
+        if (c.ca && Array.isArray(c.ca[extraKey])) {
+          for (const customApt of c.ca[extraKey]) {
+            if (!f.apartments.some((x) => x.id === customApt.id)) {
+              f.apartments.push(customApt);
             }
-          });
-        });
-      });
-    }
-    if (Array.isArray(ov.customProjects)) {
-      ov.customProjects.forEach((cp) => {
-        if (!baseProjects.some((bp) => bp.id === cp.id)) {
-          baseProjects.push(cp);
-        }
-      });
-    }
-    if (Array.isArray(ov.deletedProjectIds) && ov.deletedProjectIds.length > 0) {
-      for (let i = baseProjects.length - 1; i >= 0; i--) {
-        if (ov.deletedProjectIds.includes(baseProjects[i].id)) {
-          baseProjects.splice(i, 1);
+          }
         }
       }
     }
+
+    if (Array.isArray(c.cp)) {
+      for (const cp of c.cp) {
+        if (cp && cp.id && !baseProjects.some((bp) => bp.id === cp.id)) {
+          baseProjects.push(cp);
+        }
+      }
+    }
+
     return {
-      updatedAt: ov.u || new Date().toISOString(),
+      updatedAt: c.u || new Date().toISOString(),
+      revision: Number(c.rev) || 1,
       projects: baseProjects,
-      requests: Array.isArray(ov.requests) ? ov.requests : [],
-      history: Array.isArray(ov.history) ? ov.history : [],
-      adminPasswordHash: ov.adminPasswordHash || computeAdminHash("1234")
+      requests: Array.isArray(c.rq) ? c.rq : [],
+      history: Array.isArray(c.hi) ? c.hi : [],
+      adminPasswordHash: c.ah || computeAdminHash("1234")
     };
   } catch (err) {
     console.warn("Bulut paketi çözümlenemedi:", err);
@@ -313,17 +319,21 @@ async function decodeCloudOverlayBrowser(overlayStr) {
 }
 
 async function handleCloudRelayEnvelopeInBrowser(envelope) {
-  if (!envelope || envelope.app !== "DEMIRTURK_STUDIO_V3") return;
+  if (!envelope || (envelope.magic !== "DEMIRTURK_CLOUD_SYNC_V3" && envelope.app !== "DEMIRTURK_STUDIO_V3")) return;
 
-  if (Array.isArray(envelope.lanIPs) && envelope.lanIPs.length) {
-    state.lanIPs = envelope.lanIPs;
+  if (envelope.lanUrl) {
+    try {
+      const u = new URL(envelope.lanUrl);
+      if (u.hostname && !state.lanIPs.includes(u.hostname)) {
+        state.lanIPs.unshift(u.hostname);
+      }
+    } catch (_) {}
   }
   if (envelope.hostname) state.hostname = envelope.hostname;
   if (envelope.officeName) state.officeName = envelope.officeName;
   if (envelope.cloudUrl) state.cloudUrl = envelope.cloudUrl;
-  if (envelope.port) state.port = envelope.port;
 
-  if (envelope.overlay) {
+  if (envelope.overlay && typeof envelope.overlay === "string" && (envelope.overlay.startsWith("GZ:") || envelope.overlay.startsWith("RAW:"))) {
     const incomingTime = envelope.updatedAt ? new Date(envelope.updatedAt).getTime() : 0;
     const currentTime = lastKnownUpdate ? new Date(lastKnownUpdate).getTime() : 0;
     if (!lastKnownUpdate || incomingTime >= currentTime) {
@@ -355,21 +365,25 @@ async function handleCloudRelayEnvelopeInBrowser(envelope) {
 }
 
 async function sendCloudMobileAction(actionPayload) {
+  const actionType = actionPayload.actionType;
   const envelope = {
-    app: "DEMIRTURK_STUDIO_V3",
-    eventType: "CLOUD_CLIENT_ACTION",
+    magic: "DEMIRTURK_CLOUD_SYNC_V3",
+    type: "CLOUD_CLIENT_ACTION",
+    actionId: "act-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
     clientId: CLIENT_INSTANCE_ID,
     sentAt: new Date().toISOString(),
-    actionPayload: {
+    action: actionType,
+    adminToken: state.adminToken || "",
+    payload: {
       ...actionPayload,
-      token: state.adminToken
+      reqId: actionPayload.requestId,
+      resolveAction: actionPayload.action
     }
   };
   const res = await fetch(`https://ntfy.sh/${CLOUD_RELAY_TOPIC}`, {
     method: "POST",
     headers: {
-      Title: "Demirturk Mobile Action",
-      Priority: "default"
+      "Content-Type": "text/plain; charset=utf-8"
     },
     body: JSON.stringify(envelope)
   });
@@ -380,10 +394,9 @@ function startBrowserCloudSync() {
   if (browserCloudSyncStarted) return;
   browserCloudSyncStarted = true;
 
-  // 1. Önce buluttaki son 24 saatlik mesajları çek ve en güncel STATE_PUSH paketini uygula
-  (async () => {
+  async function pullLatestCloudSnapshot(sinceWindow = "2h", sendPingIfMissing = false) {
     try {
-      const res = await fetch(`https://ntfy.sh/${CLOUD_RELAY_TOPIC}/json?poll=1&since=24h`, {
+      const res = await fetch(`https://ntfy.sh/${CLOUD_RELAY_TOPIC}/json?poll=1&since=${sinceWindow}`, {
         cache: "no-store"
       });
       if (res.ok) {
@@ -395,7 +408,12 @@ function startBrowserCloudSync() {
             const outer = JSON.parse(line);
             if (outer && outer.event === "message" && typeof outer.message === "string") {
               const inner = JSON.parse(outer.message);
-              if (inner && inner.app === "DEMIRTURK_STUDIO_V3" && inner.overlay) {
+              if (
+                inner &&
+                inner.magic === "DEMIRTURK_CLOUD_SYNC_V3" &&
+                typeof inner.overlay === "string" &&
+                (inner.overlay.startsWith("GZ:") || inner.overlay.startsWith("RAW:"))
+              ) {
                 if (
                   !latestOverlayEnv ||
                   new Date(inner.updatedAt || 0).getTime() >= new Date(latestOverlayEnv.updatedAt || 0).getTime()
@@ -408,13 +426,12 @@ function startBrowserCloudSync() {
         }
         if (latestOverlayEnv) {
           await handleCloudRelayEnvelopeInBrowser(latestOverlayEnv);
-        } else {
-          // Henüz GZ paket yoksa ofis bilgisayarlarından anlık durum yayını iste
+        } else if (sendPingIfMissing) {
           fetch(`https://ntfy.sh/${CLOUD_RELAY_TOPIC}`, {
             method: "POST",
             body: JSON.stringify({
-              app: "DEMIRTURK_STUDIO_V3",
-              eventType: "CLOUD_CLIENT_PING",
+              magic: "DEMIRTURK_CLOUD_SYNC_V3",
+              type: "CLOUD_CLIENT_PING",
               clientId: CLIENT_INSTANCE_ID,
               sentAt: new Date().toISOString()
             })
@@ -424,21 +441,39 @@ function startBrowserCloudSync() {
     } catch (err) {
       console.warn("Bulut geçmişi okunamadı:", err);
     }
-  })();
+  }
+
+  // 1. Önce buluttaki mesajları çek ve en güncel GZ/RAW paketini uygula
+  pullLatestCloudSnapshot("2h", true);
 
   // 2. Canlı SSE akışını başlat (ofis bilgisayarında yapılan her işlem 0.3 sn içinde telefona düşer)
-  try {
-    const cloudEs = new EventSource(`https://ntfy.sh/${CLOUD_RELAY_TOPIC}/sse`);
-    cloudEs.onmessage = (ev) => {
-      try {
-        const outer = JSON.parse(ev.data);
-        if (outer && outer.event === "message" && typeof outer.message === "string") {
-          const inner = JSON.parse(outer.message);
-          handleCloudRelayEnvelopeInBrowser(inner);
-        }
-      } catch (_) {}
-    };
-  } catch (_) {}
+  function openCloudEventStream() {
+    try {
+      const cloudEs = new EventSource(`https://ntfy.sh/${CLOUD_RELAY_TOPIC}/sse`);
+      cloudEs.onmessage = (ev) => {
+        try {
+          const outer = JSON.parse(ev.data);
+          if (outer && outer.event === "message" && typeof outer.message === "string") {
+            const inner = JSON.parse(outer.message);
+            handleCloudRelayEnvelopeInBrowser(inner);
+          }
+        } catch (_) {}
+      };
+    } catch (_) {}
+  }
+  openCloudEventStream();
+
+  // 3. Mobil tarayıcı ekranı kilitlenip açıldığında veya arka plandan döndüğünde anında eşitle
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      pullLatestCloudSnapshot("15m", false);
+    }
+  });
+  setInterval(() => {
+    if (document.visibilityState === "visible") {
+      pullLatestCloudSnapshot("2m", false);
+    }
+  }, 8000);
 }
 
 function applyServerState(data, isIncremental = false) {
@@ -3460,8 +3495,8 @@ async function syncPeersNow() {
     fetch(`https://ntfy.sh/${CLOUD_RELAY_TOPIC}`, {
       method: "POST",
       body: JSON.stringify({
-        app: "DEMIRTURK_STUDIO_V3",
-        eventType: "CLOUD_CLIENT_PING",
+        magic: "DEMIRTURK_CLOUD_SYNC_V3",
+        type: "CLOUD_CLIENT_PING",
         clientId: CLIENT_INSTANCE_ID,
         sentAt: new Date().toISOString()
       })
