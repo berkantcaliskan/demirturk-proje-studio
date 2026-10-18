@@ -1,0 +1,3287 @@
+/* ==========================================================================
+   DEMİRTÜRK YAPI & İNŞAAT — MİMARİ PORTFÖY & SATIŞ STÜDYOSU (v8)
+   3-Sütunlu Kurumsal PropTech / CAD Çalışma Alanı Mimarisi
+   ========================================================================== */
+
+:root {
+  /* Kurumsal Mimari Palet */
+  --obsidian-950: #070a10;
+  --obsidian-900: #0c111d;
+  --obsidian-800: #151c2c;
+  --obsidian-700: #1e293b;
+  --obsidian-600: #334155;
+
+  --stone-50: #f9f8f6;
+  --stone-100: #f2f0ec;
+  --stone-200: #e5e2dc;
+  --stone-300: #d5d0c8;
+
+  --gold-300: #e5c98b;
+  --gold-400: #d4b26a;
+  --gold-500: #c5a059;
+  --gold-600: #a37e3b;
+  --gold-glow: rgba(197, 160, 89, 0.18);
+
+  --text-main: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  /* Satış Durum Renkleri (Tüm Projelerde Tek Tip — Satılık Düz Beyaz/Renksiz) */
+  --st-satilik: #334155;
+  --st-satilik-grad: #ffffff;
+  --st-satilik-soft: #f8fafc;
+  --st-satilik-border: #94a3b8;
+
+  --st-kapora: #d97706;
+  --st-kapora-grad: #d97706;
+  --st-kapora-soft: #fffbeb;
+  --st-kapora-border: #fde68a;
+
+  --st-pesinat: #2563eb;
+  --st-pesinat-grad: #2563eb;
+  --st-pesinat-soft: #eff6ff;
+  --st-pesinat-border: #bfdbfe;
+
+  --st-satildi: #dc2626;
+  --st-satildi-grad: #dc2626;
+  --st-satildi-soft: #fef2f2;
+  --st-satildi-border: #fecaca;
+
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  background: var(--stone-100);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* SVG İkonlar */
+.icon-svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.icon-svg-sm {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex-shrink: 0;
+}
+
+/* Canlı Durum Noktaları */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-satilik { background: #ffffff; border: 1.5px solid #64748b; box-shadow: none; }
+.dot-kapora  { background: #d97706; box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2); }
+.dot-pesinat { background: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
+.dot-satildi { background: #dc2626; box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2); }
+.dot-kapali  {
+  background: repeating-linear-gradient(
+    -45deg,
+    #dc2626 0px,
+    #dc2626 2.5px,
+    #ffffff 2.5px,
+    #ffffff 5px
+  );
+  border: 1.5px solid #991b1b;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.22);
+}
+.dot-satisa-kapali {
+  background: repeating-linear-gradient(
+    -45deg,
+    #0f172a 0px,
+    #0f172a 2.5px,
+    #ffffff 2.5px,
+    #ffffff 5px
+  );
+  border: 1.5px solid #0f172a;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.22);
+}
+
+/* ==========================================================================
+   ANA UYGULAMA İSKELETİ (STUDIO SHELL)
+   ========================================================================== */
+.studio-shell {
+  display: grid;
+  grid-template-columns: 288px minmax(0, 1fr);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  transition: grid-template-columns 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.studio-shell.left-collapsed {
+  grid-template-columns: 0px minmax(0, 1fr);
+}
+
+.studio-shell.left-collapsed .studio-sidebar {
+  border-right: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   1. SOL DOCK: PORTFÖY NAVİGASYONU & KONTROL MERKEZİ
+   ========================================================================== */
+.studio-sidebar {
+  background: var(--obsidian-900);
+  color: #f8fafc;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 0;
+  overflow: hidden;
+  z-index: 200;
+  user-select: none;
+  transition: opacity 0.2s ease, transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px 16px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.brand-emblem {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.brand-compass {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: none;
+}
+
+.brand-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.brand-title {
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.brand-title span {
+  color: var(--gold-500);
+  font-weight: 700;
+}
+
+.brand-subtitle {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #94a3b8;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.sidebar-collapse-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(203, 213, 225, 0.35);
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.85) 0%, rgba(30, 41, 59, 0.95) 100%);
+  color: #f1f5f9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 5px rgba(0, 0, 0, 0.35);
+  transition: all 0.15s;
+}
+
+.sidebar-collapse-btn:hover {
+  background: rgba(197, 160, 89, 0.28);
+  border-color: var(--gold-400);
+  color: var(--gold-300);
+}
+
+/* Çalışma Modu Menüsü */
+.sidebar-nav-section {
+  padding: 12px 14px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-section-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.studio-mode-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(203, 213, 225, 0.28);
+  border-left: 3.5px solid rgba(148, 163, 184, 0.5);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+  color: #e2e8f0;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.16s ease;
+  text-align: left;
+}
+
+.nav-tab:hover {
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.92) 0%, rgba(30, 41, 59, 0.98) 100%);
+  border-color: rgba(197, 160, 89, 0.7);
+  border-left-color: var(--gold-400);
+  transform: translateY(-1px);
+}
+
+.nav-tab.active {
+  background: linear-gradient(90deg, rgba(197, 160, 89, 0.28) 0%, rgba(30, 41, 59, 0.95) 100%);
+  color: var(--gold-300);
+  border-color: var(--gold-400);
+  border-left: 4px solid var(--gold-400);
+  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.28), 0 4px 12px rgba(0, 0, 0, 0.35);
+  font-weight: 800;
+}
+
+/* Sidebar Genel Portföy Telemetri Kartı */
+.sidebar-telemetry {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.telemetry-box {
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(203, 213, 225, 0.16);
+  border-radius: 9px;
+  padding: 10px 12px;
+}
+
+.telemetry-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.telemetry-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.telemetry-rate {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold-400);
+}
+
+.telemetry-bar {
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 9px;
+}
+
+.telemetry-seg-satildi { background: #ef4444; }
+.telemetry-seg-pesinat { background: #3b82f6; }
+.telemetry-seg-kapora  { background: #f59e0b; }
+.telemetry-seg-satilik { background: #22c55e; }
+.telemetry-seg-kapali  {
+  background: repeating-linear-gradient(
+    -45deg,
+    #dc2626 0px,
+    #dc2626 3px,
+    #ffffff 3px,
+    #ffffff 6px
+  );
+}
+.telemetry-seg-satisa-kapali {
+  background: repeating-linear-gradient(
+    -45deg,
+    #0f172a 0px,
+    #0f172a 3px,
+    #ffffff 3px,
+    #ffffff 6px
+  );
+}
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.t-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+}
+
+.t-stat-val {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.t-stat-lbl {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+/* Sidebar Proje Arama & Başlık */
+.sidebar-projects-header {
+  padding: 12px 14px 8px;
+}
+
+.sidebar-section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sidebar-section-row .sidebar-section-label {
+  margin-bottom: 0;
+}
+
+.btn-sidebar-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: linear-gradient(180deg, rgba(197, 160, 89, 0.28) 0%, rgba(197, 160, 89, 0.16) 100%);
+  color: var(--gold-300);
+  border: 1.5px solid var(--gold-400);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-sidebar-action:hover {
+  background: var(--gold-500);
+  color: var(--obsidian-950);
+  border-color: #fde68a;
+}
+
+.sidebar-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-search-box .search-icon {
+  position: absolute;
+  left: 9px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.sidebar-search-box input {
+  width: 100%;
+  padding: 8px 10px 8px 30px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1.5px solid rgba(203, 213, 225, 0.26);
+  border-radius: 7px;
+  color: #f8fafc;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.sidebar-search-box input::placeholder {
+  color: #94a3b8;
+}
+
+.sidebar-search-box input:focus {
+  border-color: var(--gold-400);
+  background: rgba(30, 41, 59, 0.95);
+}
+
+/* Dikey Proje Portföy Listesi */
+.sidebar-project-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-project-list::-webkit-scrollbar {
+  width: 5px;
+}
+.sidebar-project-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 99px;
+}
+
+.project-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 11px 12px 11px 14px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.96) 100%);
+  border: 1.5px solid rgba(203, 213, 225, 0.32);
+  border-left: 4px solid rgba(148, 163, 184, 0.65);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 3px 7px rgba(0, 0, 0, 0.38);
+  cursor: pointer;
+  transition: all 0.16s ease;
+  text-align: left;
+}
+
+.project-tab:hover {
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.96) 0%, rgba(30, 41, 59, 0.98) 100%);
+  border-color: rgba(197, 160, 89, 0.8);
+  border-left-color: var(--gold-400);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 5px 12px rgba(0, 0, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+.project-tab:active {
+  transform: translateY(0);
+}
+
+.project-tab.active {
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.28) 0%, rgba(30, 41, 59, 0.96) 100%);
+  border: 1.5px solid var(--gold-400);
+  border-left: 4px solid var(--gold-400);
+  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.35), 0 6px 16px rgba(0, 0, 0, 0.48);
+}
+
+.project-tab.active::before {
+  display: none;
+}
+
+.pt-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.pt-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #f8fafc;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.project-tab.active .pt-title {
+  color: #fde68a;
+}
+
+.proj-edit-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1px solid rgba(203, 213, 225, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  opacity: 0.9;
+  transition: all 0.15s;
+}
+
+.project-tab:hover .proj-edit-trigger,
+.project-tab.active .proj-edit-trigger {
+  opacity: 1;
+}
+
+.proj-edit-trigger:hover {
+  opacity: 1 !important;
+  background: rgba(197, 160, 89, 0.32);
+  border-color: var(--gold-400);
+  color: var(--gold-300);
+}
+
+.pt-sub-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.69rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.pt-badge {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.45);
+  flex-shrink: 0;
+}
+
+.pt-mini-bar {
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+/* Sidebar Alt Oturum ve Bağlantı Alanı */
+.sidebar-footer {
+  padding: 10px 14px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-sync-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+.sync-badge.offline .pulse-dot {
+  background: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.btn-icon-subtle {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(203, 213, 225, 0.32);
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.8) 0%, rgba(30, 41, 59, 0.92) 100%);
+  color: #f1f5f9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.15s;
+}
+
+.btn-icon-subtle:hover {
+  background: rgba(197, 160, 89, 0.25);
+  border-color: var(--gold-400);
+  color: #ffffff;
+}
+
+.sidebar-auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.btn-sidebar-full {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(203, 213, 225, 0.32);
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.85) 0%, rgba(30, 41, 59, 0.95) 100%);
+  color: #f8fafc;
+  font-family: var(--font-sans);
+  font-size: 0.77rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 5px rgba(0, 0, 0, 0.35);
+  transition: all 0.15s;
+}
+
+.btn-sidebar-full:hover {
+  background: linear-gradient(180deg, rgba(71, 85, 105, 0.92) 0%, rgba(51, 65, 85, 0.98) 100%);
+  border-color: rgba(255, 255, 255, 0.55);
+  transform: translateY(-1px);
+}
+
+.btn-sidebar-gold {
+  background: linear-gradient(180deg, rgba(197, 160, 89, 0.3) 0%, rgba(197, 160, 89, 0.16) 100%);
+  border: 1.5px solid var(--gold-400);
+  color: var(--gold-300);
+}
+
+.btn-sidebar-gold:hover {
+  background: linear-gradient(180deg, rgba(197, 160, 89, 0.42) 0%, rgba(197, 160, 89, 0.26) 100%);
+  border-color: #fde68a;
+  color: #ffffff;
+}
+
+.topbar-counter {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.admin-session-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-session-active {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: rgba(21, 128, 61, 0.22);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #86efac;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-session-active:hover {
+  background: rgba(220, 38, 38, 0.22);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fca5a5;
+}
+
+/* ==========================================================================
+   2. ORTA SAHNE: KOMUTA BARI & MİMARİ STÜDYO ÇALIŞMA ALANI
+   ========================================================================== */
+.studio-main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  background: var(--stone-100);
+}
+
+/* Üst Proje Komuta Barı */
+.project-command-bar {
+  min-height: 62px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--stone-200);
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.command-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.menu-toggle-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--stone-200);
+  background: var(--obsidian-900);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.menu-toggle-trigger:hover {
+  background: var(--obsidian-800);
+  color: var(--gold-300);
+}
+
+.menu-toggle-label {
+  display: inline;
+}
+
+.active-project-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cmd-proj-title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--obsidian-900);
+  letter-spacing: -0.01em;
+}
+
+.cmd-proj-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cmd-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--stone-100);
+  color: var(--obsidian-700);
+  border: 1px solid var(--stone-200);
+}
+
+.cmd-meta-pill.pill-gold {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.cmd-meta-pill.pill-delivery {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+.command-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.project-live-metrics {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.proj-metric-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--stone-50);
+  border: 1px solid var(--stone-200);
+}
+
+.proj-metric-chip strong {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.project-meta-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   STÜDYO GÖVDESİ: SOL BİNA KESİTİ + MERKEZ TUVAL + SAĞ DENETÇİ PANELİ
+   ========================================================================== */
+.studio-workspace-body {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.studio-floorplan-layout {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) 340px;
+  overflow: hidden;
+  transition: grid-template-columns 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.studio-floorplan-layout.right-collapsed {
+  grid-template-columns: 190px minmax(0, 1fr) 0px;
+}
+
+.studio-floorplan-layout.right-collapsed .studio-inspector {
+  border-left: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 2A. SOL DİKEY BİNA KESİTİ / KAT ASANSÖRÜ (ELEVATION DOCK) */
+.elevation-dock {
+  background: #ffffff;
+  border-right: 1px solid var(--stone-200);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  overflow-y: auto;
+  user-select: none;
+}
+
+.elevation-header {
+  margin-bottom: 8px;
+}
+
+.elevation-title {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.elevation-subtitle {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--obsidian-900);
+  margin-top: 1px;
+}
+
+/* Dikey Kat Asansörü Butonları */
+.floor-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  position: relative;
+  padding-left: 10px;
+  border-left: 2px dashed var(--stone-300);
+}
+
+.floor-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--stone-200);
+  background: var(--stone-50);
+  color: var(--obsidian-800);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.16s ease;
+  text-align: left;
+  position: relative;
+}
+
+.floor-btn::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--stone-300);
+  border: 2px solid #ffffff;
+}
+
+.floor-btn:hover {
+  border-color: var(--obsidian-600);
+  background: #ffffff;
+  transform: translateX(2px);
+}
+
+.floor-btn.active {
+  background: var(--obsidian-900);
+  color: #ffffff;
+  border-color: var(--obsidian-900);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
+}
+
+.floor-btn.active::before {
+  background: var(--gold-500);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
+.floor-btn-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.floor-btn-name {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.floor-btn.active .floor-btn-name {
+  color: var(--gold-300);
+}
+
+.floor-btn-count {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.floor-btn-dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.floor-mini-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.elevation-tools {
+  border-top: 1px solid var(--stone-200);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.studio-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+.studio-toggle-row input {
+  accent-color: var(--obsidian-900);
+  width: 14px;
+  height: 14px;
+}
+
+.btn-elevation-tool {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--stone-200);
+  background: var(--stone-50);
+  color: var(--obsidian-800);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-elevation-tool:hover {
+  background: var(--obsidian-900);
+  color: #ffffff;
+  border-color: var(--obsidian-900);
+}
+
+/* 2B. MERKEZ MİMARİ TUVAL SÜTUNU */
+.canvas-viewport-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 0;
+  background:
+    radial-gradient(circle at 50% 35%, #ffffff 0%, #ece9e2 100%);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 14px 16px 70px;
+}
+
+.floorplan-stage-wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex: 0 0 auto;
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 0;
+}
+
+.floorplan-scale-box {
+  position: relative;
+  display: block;
+  width: 1219px;
+  height: 686px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.1), 0 4px 12px rgba(15, 23, 42, 0.05);
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.floorplan-canvas {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 1219px !important;
+  height: 686px !important;
+  margin: 0 !important;
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  transform-origin: top left !important;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* Tuval Altı Yüzen Kontrol Dock'u */
+.canvas-floating-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 10px auto 0;
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.viewer-mode-bar,
+.admin-mode-bar {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 14px;
+  border-radius: 99px;
+  background: rgba(12, 17, 29, 0.92);
+  backdrop-filter: blur(12px);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 28px rgba(7, 10, 16, 0.25);
+  flex-wrap: wrap;
+}
+
+.legend-pills {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.viewer-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.viewer-tip {
+  font-size: 0.74rem;
+  color: #cbd5e1;
+}
+
+.viewer-tip strong {
+  color: var(--gold-300);
+}
+
+.control-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--gold-400);
+}
+
+.mode-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 99px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  font-family: var(--font-sans);
+  font-size: 0.73rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mode-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.mode-pill.active {
+  background: var(--gold-500);
+  color: var(--obsidian-950);
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   3. SAĞ DOCK: BAĞIMSIZ BÖLÜM DENETÇİSİ (UNIT INSPECTOR & FLOOR ROSTER)
+   ========================================================================== */
+.studio-inspector {
+  background: #ffffff;
+  border-left: 1px solid var(--stone-200);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inspector-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 32px;
+  align-items: center;
+  border-bottom: 1px solid var(--stone-200);
+  background: var(--stone-50);
+  padding: 6px;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.inspector-collapse-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--stone-200);
+  background: #ffffff;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.inspector-collapse-btn:hover {
+  background: var(--obsidian-900);
+  color: #ffffff;
+  border-color: var(--obsidian-900);
+}
+
+.inspector-tab {
+  padding: 8px 8px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.inspector-tab.active {
+  background: #ffffff;
+  color: var(--obsidian-900);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.inspector-pane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Seçili Daire Kimlik Kartı (Inspector) */
+.inspector-unit-hero {
+  border-radius: 10px;
+  padding: 16px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  border: 1.5px solid transparent;
+}
+
+.inspector-unit-hero.st-SATILIK {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+.inspector-unit-hero.st-KAPORA {
+  background: #d97706;
+  color: #ffffff;
+  border-color: #92400e;
+}
+.inspector-unit-hero.st-PESINAT {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #1e40af;
+}
+.inspector-unit-hero.st-SATILDI {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #991b1b;
+}
+.inspector-unit-hero.st-KAPALI {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #dc2626 0px,
+      #dc2626 14px,
+      #ffffff 14px,
+      #ffffff 28px
+    );
+  color: #0f172a;
+  border: 2px solid #991b1b;
+  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.78), 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+.inspector-unit-hero.st-KAPALI .iu-block-tag {
+  background: #0f172a;
+  color: #ffffff;
+}
+.inspector-unit-hero.st-KAPALI .iu-status-pill {
+  background: #dc2626;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(153, 27, 27, 0.35);
+}
+.inspector-unit-hero.st-KAPALI .iu-price-box {
+  border-top-color: rgba(153, 27, 27, 0.3);
+}
+.inspector-unit-hero.st-SATISA_KAPALI {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #0f172a 0px,
+      #0f172a 14px,
+      #ffffff 14px,
+      #ffffff 28px
+    );
+  color: #0f172a;
+  border: 2px solid #0f172a;
+  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.8), 0 8px 20px rgba(15, 23, 42, 0.14);
+}
+.inspector-unit-hero.st-SATISA_KAPALI .iu-block-tag {
+  background: #0f172a;
+  color: #ffffff;
+}
+.inspector-unit-hero.st-SATISA_KAPALI .iu-status-pill {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.35);
+}
+.inspector-unit-hero.st-SATISA_KAPALI .iu-price-box {
+  border-top-color: rgba(15, 23, 42, 0.3);
+}
+
+.iu-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.iu-block-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.inspector-unit-hero.st-SATILIK .iu-block-tag {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.iu-status-pill {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.inspector-unit-hero.st-SATILIK .iu-status-pill {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.iu-number {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.iu-sub {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.iu-price-box {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.inspector-unit-hero.st-SATILIK .iu-price-box {
+  border-top-color: #e2e8f0;
+}
+
+.iu-price-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+.iu-price-val {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* Inspector Detay Satırları */
+.inspector-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.im-cell {
+  background: var(--stone-50);
+  border: 1px solid var(--stone-200);
+  border-radius: 8px;
+  padding: 9px 11px;
+}
+
+.im-lbl {
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  display: block;
+}
+
+.im-val {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--obsidian-900);
+  margin-top: 2px;
+  display: block;
+}
+
+/* Inspector Durum Değiştirme Matrisi (Admin) */
+.inspector-section-title {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.status-matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.btn-status-matrix {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 11px;
+  border-radius: 8px;
+  border: 1.5px solid var(--stone-200);
+  background: #ffffff;
+  color: var(--obsidian-900);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-status-matrix:hover {
+  border-color: var(--obsidian-700);
+  transform: translateY(-1px);
+}
+
+.btn-status-matrix.active-SATILIK {
+  background: var(--st-satilik-soft);
+  border-color: var(--st-satilik);
+  color: var(--st-satilik);
+}
+.btn-status-matrix.active-KAPORA {
+  background: var(--st-kapora-soft);
+  border-color: var(--st-kapora);
+  color: var(--st-kapora);
+}
+.btn-status-matrix.active-PESINAT {
+  background: var(--st-pesinat-soft);
+  border-color: var(--st-pesinat);
+  color: var(--st-pesinat);
+}
+.btn-status-matrix.active-SATILDI {
+  background: var(--st-satildi-soft);
+  border-color: var(--st-satildi);
+  color: var(--st-satildi);
+}
+.btn-status-matrix.active-KAPALI {
+  background: repeating-linear-gradient(
+    -45deg,
+    #fee2e2 0px,
+    #fee2e2 8px,
+    #ffffff 8px,
+    #ffffff 16px
+  );
+  border-color: #dc2626;
+  color: #991b1b;
+}
+.btn-status-matrix.active-SATISA_KAPALI {
+  background: repeating-linear-gradient(
+    -45deg,
+    #cbd5e1 0px,
+    #cbd5e1 8px,
+    #ffffff 8px,
+    #ffffff 16px
+  );
+  border-color: #0f172a;
+  color: #0f172a;
+}
+
+/* Inspector İçi Hızlı Düzenleme & Talep Formu */
+.inspector-card-form {
+  background: var(--stone-50);
+  border: 1px solid var(--stone-200);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inspector-card-form .form-group {
+  margin-bottom: 0;
+}
+
+.inspector-card-form label {
+  font-size: 0.68rem;
+  margin-bottom: 4px;
+}
+
+.inspector-card-form input,
+.inspector-card-form select {
+  padding: 7px 10px;
+  font-size: 0.8rem;
+  background: #ffffff;
+}
+
+/* Kat Listesi (Inspector Sekme 2) */
+.inspector-units-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ins-unit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--stone-200);
+  background: var(--stone-50);
+  cursor: pointer;
+  transition: all 0.14s;
+}
+
+.ins-unit-row:hover {
+  border-color: var(--obsidian-600);
+  background: #ffffff;
+}
+
+.ins-unit-row.selected {
+  border-color: var(--gold-500);
+  background: #fffbeb;
+}
+
+.ins-unit-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ins-unit-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--obsidian-900);
+}
+
+.ins-unit-sub {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.ins-unit-price {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--obsidian-800);
+}
+
+/* ==========================================================================
+   KAT PLANI İÇİ MİMARİ ELEMANLAR (.fp-*)
+   ========================================================================== */
+.fp-el {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.fp-apt {
+  position: absolute;
+  border: 1.5px solid rgba(15, 23, 42, 0.25);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 6px 8px;
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s ease, border-color 0.16s ease;
+  z-index: 10;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 2px 5px rgba(15, 23, 42, 0.08);
+}
+
+.fp-apt:hover {
+  transform: scale(1.025);
+  z-index: 30;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.22), 0 0 0 2px var(--obsidian-900);
+}
+
+.fp-apt.selected-apt {
+  z-index: 32;
+  box-shadow: 0 0 0 3px var(--gold-500), 0 14px 28px rgba(15, 23, 42, 0.28) !important;
+}
+
+/* Daire Sağ Üst Üç Nokta (⋯) Butonu */
+.fp-apt-more-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 35;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.fp-apt-more-btn:hover {
+  background: var(--obsidian-900);
+  border-color: var(--gold-400);
+  color: var(--gold-300);
+  transform: scale(1.1);
+}
+
+.fp-apt.compact-apt .fp-apt-more-btn {
+  width: 19px;
+  height: 19px;
+  top: 2px;
+  right: 2px;
+  font-size: 0.75rem;
+}
+
+/* Durum Renk Sınıfları (Tüm Projelerde Tek Tip — Satılık Düz Beyaz/Renksiz) */
+.fp-apt.status-SATILIK,
+.fp-apt.status-SATILIK.white-style {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #475569;
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+}
+
+.fp-apt.status-SATILIK .fp-apt-more-btn {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.fp-apt.status-SATILIK .fp-apt-more-btn:hover {
+  background: var(--obsidian-900);
+  color: var(--gold-300);
+  border-color: var(--obsidian-900);
+}
+
+.fp-apt.status-KAPORA {
+  background: #d97706;
+  color: #ffffff;
+  border: 1.5px solid #92400e;
+}
+
+.fp-apt.status-PESINAT {
+  background: #2563eb;
+  color: #ffffff;
+  border: 1.5px solid #1e40af;
+}
+
+.fp-apt.status-SATILDI {
+  background: #dc2626;
+  color: #ffffff;
+  border: 1.5px solid #991b1b;
+}
+
+/* KAPALI Daireler: Kırmızı - Beyaz Çizgili Görünüm */
+.fp-apt.status-KAPALI {
+  background: repeating-linear-gradient(
+    -45deg,
+    #dc2626 0px,
+    #dc2626 11px,
+    #ffffff 11px,
+    #ffffff 22px
+  );
+  color: #0f172a;
+  border: 2px solid #991b1b;
+}
+
+.fp-apt.status-KAPALI .apt-block-label,
+.fp-apt.status-KAPALI .apt-number,
+.fp-apt.status-KAPALI .apt-rooms {
+  background: rgba(255, 255, 255, 0.94);
+  color: #0f172a;
+  padding: 1px 6px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.fp-apt.status-KAPALI .apt-status-stamp {
+  background: #991b1b;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.fp-apt.status-KAPALI .apt-price {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.fp-apt.compact-apt.status-KAPALI .apt-number,
+.fp-apt.compact-apt.status-KAPALI .apt-rooms {
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+/* SATIŞA KAPALI Daireler: Siyah - Beyaz Çizgili Görünüm */
+.fp-apt.status-SATISA_KAPALI {
+  background: repeating-linear-gradient(
+    -45deg,
+    #0f172a 0px,
+    #0f172a 11px,
+    #ffffff 11px,
+    #ffffff 22px
+  );
+  color: #0f172a;
+  border: 2px solid #0f172a;
+}
+
+.fp-apt.status-SATISA_KAPALI .apt-block-label,
+.fp-apt.status-SATISA_KAPALI .apt-number,
+.fp-apt.status-SATISA_KAPALI .apt-rooms {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  padding: 1px 6px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+}
+
+.fp-apt.status-SATISA_KAPALI .apt-status-stamp {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+}
+
+.fp-apt.status-SATISA_KAPALI .apt-price {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.fp-apt.compact-apt.status-SATISA_KAPALI .apt-number,
+.fp-apt.compact-apt.status-SATISA_KAPALI .apt-rooms {
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+.fp-apt .apt-block-label {
+  font-size: 0.66rem;
+  font-weight: 700;
+  opacity: 0.88;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+
+.fp-apt .apt-number {
+  font-size: 1.02rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.fp-apt .apt-rooms {
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.15;
+  opacity: 0.95;
+}
+
+.fp-apt .apt-price {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 4px;
+  background: rgba(0, 0, 0, 0.24);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: -0.02em;
+}
+
+.fp-apt.status-SATILIK .apt-price,
+.fp-apt.status-SATILIK.white-style .apt-price {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.fp-apt .apt-status-stamp {
+  margin-top: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.32);
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fp-apt.status-SATILIK .apt-status-stamp,
+.fp-apt.status-SATILIK.white-style .apt-status-stamp {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+/* Kompakt Daire (Yenişehir 3. Etap 50 Daire) */
+.fp-apt.compact-apt {
+  padding: 2px 3px;
+  border-width: 1px;
+  border-radius: 4px;
+}
+.fp-apt.compact-apt .apt-block-label { display: none; }
+.fp-apt.compact-apt .apt-number { font-size: 0.68rem; line-height: 1.05; }
+.fp-apt.compact-apt .apt-rooms { font-size: 0.62rem; line-height: 1.05; }
+.fp-apt.compact-apt .apt-price { font-size: 0.58rem; margin-top: 1px; padding: 1px 4px; }
+.fp-apt.compact-apt .apt-status-stamp { font-size: 0.54rem; margin-top: 1px; padding: 1px 4px; }
+
+/* Orta Ölçekli Daire (1. ve 2. Etap) */
+.fp-apt.med-apt { padding: 3px 5px; }
+.fp-apt.med-apt .apt-block-label { font-size: 0.58rem; }
+.fp-apt.med-apt .apt-number { font-size: 0.84rem; line-height: 1.1; }
+.fp-apt.med-apt .apt-rooms { font-size: 0.76rem; line-height: 1.1; }
+.fp-apt.med-apt .apt-price { font-size: 0.72rem; margin-top: 2px; padding: 1px 6px; }
+.fp-apt.med-apt .apt-status-stamp { font-size: 0.6rem; margin-top: 2px; padding: 1px 6px; }
+
+/* Havuz, Balkon, Pusula */
+.fp-pool {
+  position: absolute;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  border: 2px solid #075985;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.16em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 12px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(2, 132, 199, 0.18);
+}
+
+.fp-balcony {
+  position: absolute;
+  background: #f8fafc;
+  border: 1.5px solid #475569;
+  color: #334155;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fp-compass-box {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fp-compass-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.fp-compass-dir {
+  position: absolute;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #991b1b;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Tüm Katlar Panorama Görünümü */
+.all-floors-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  padding-bottom: 24px;
+}
+
+.all-floors-item {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--stone-200);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.all-floors-item h3 {
+  width: 100%;
+  font-size: 0.88rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--obsidian-900);
+  border-bottom: 1px solid var(--stone-200);
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   ENVANTER MATRİSİ GÖRÜNÜMÜ (SUMMARY SECTION)
+   ========================================================================== */
+.summary-section {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filter-bar {
+  background: #ffffff;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--stone-200);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-item label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.filter-item select,
+.filter-item input {
+  padding: 8px 11px;
+  border: 1px solid var(--stone-200);
+  border-radius: 7px;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+  background: var(--stone-50);
+  outline: none;
+}
+
+.filter-item select:focus,
+.filter-item input:focus {
+  border-color: var(--obsidian-900);
+  background: #ffffff;
+}
+
+.summary-table-card {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid var(--stone-200);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--stone-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card-header h3 {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--obsidian-900);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  background: var(--obsidian-900);
+  color: var(--gold-400);
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.hint-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.apt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.apt-table th,
+.apt-table td {
+  padding: 11px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--stone-100);
+}
+
+.apt-table th {
+  background: var(--stone-50);
+  font-weight: 800;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.apt-table tbody tr:hover {
+  background: #faf9f6;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.71rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+
+.status-badge.SATILIK { background: var(--st-satilik-soft); color: var(--st-satilik); border: 1px solid var(--st-satilik-border); }
+.status-badge.KAPORA  { background: var(--st-kapora-soft);  color: var(--st-kapora);  border: 1px solid var(--st-kapora-border); }
+.status-badge.PESINAT { background: var(--st-pesinat-soft); color: var(--st-pesinat); border: 1px solid var(--st-pesinat-border); }
+.status-badge.SATILDI { background: var(--st-satildi-soft); color: var(--st-satildi); border: 1px solid var(--st-satildi-border); }
+.status-badge.KAPALI  {
+  background: repeating-linear-gradient(
+    -45deg,
+    #fee2e2 0px,
+    #fee2e2 6px,
+    #ffffff 6px,
+    #ffffff 12px
+  );
+  color: #991b1b;
+  border: 1px solid #f87171;
+}
+.status-badge.SATISA_KAPALI {
+  background: repeating-linear-gradient(
+    -45deg,
+    #cbd5e1 0px,
+    #cbd5e1 6px,
+    #ffffff 6px,
+    #ffffff 12px
+  );
+  color: #0f172a;
+  border: 1px solid #475569;
+}
+
+/* Son İşlem Kayıtları */
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.activity-item {
+  padding: 9px 11px;
+  border-radius: 8px;
+  background: var(--stone-50);
+  border: 1px solid var(--stone-200);
+  border-left: 3px solid var(--obsidian-900);
+  font-size: 0.76rem;
+}
+
+.activity-item .act-time {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* ==========================================================================
+   GENEL BUTONLAR VE MODALLAR
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 6px 11px;
+  font-size: 0.74rem;
+}
+
+.btn-primary {
+  background: var(--obsidian-900);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--obsidian-800);
+}
+
+.btn-ghost {
+  background: #ffffff;
+  color: var(--text-main);
+  border-color: var(--stone-200);
+}
+.btn-ghost:hover {
+  background: var(--stone-50);
+  border-color: var(--stone-300);
+}
+
+.btn-danger-outline {
+  background: #ffffff;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+.btn-danger-outline:hover {
+  background: #fef2f2;
+  border-color: #f87171;
+}
+
+/* Modallar */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 10, 16, 0.68);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.modal-box {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: min(86dvh, 780px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--stone-200);
+  box-shadow: 0 25px 50px -12px rgba(7, 10, 16, 0.45);
+  overflow: hidden;
+  margin: auto;
+}
+
+.modal-box.modal-lg {
+  max-width: 680px;
+  max-height: min(86dvh, 780px);
+}
+
+.modal-header {
+  padding: 13px 18px;
+  background: var(--obsidian-900);
+  color: #ffffff;
+  border-bottom: 2px solid var(--gold-500);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.modal-header h3 {
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.modal-close {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.modal-close:hover {
+  background: #dc2626;
+  border-color: #ef4444;
+  color: #ffffff;
+}
+
+#editAptForm,
+#newProjectForm,
+#editProjectForm,
+#addApartmentForm,
+#adminLoginForm,
+#adminPasswordForm,
+#requestStatusForm,
+.network-modal-body {
+  padding: 16px 20px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.request-summary-box {
+  background: var(--stone-50);
+  border: 1px solid var(--stone-200);
+  border-left: 3px solid var(--gold-500);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 13px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group select {
+  padding: 9px 12px;
+  border: 1px solid var(--stone-200);
+  border-radius: 7px;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-main);
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--obsidian-900);
+}
+
+.modal-footer {
+  padding: 11px 20px;
+  background: var(--stone-50);
+  border-top: 1px solid var(--stone-200);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+}
+
+.network-status-banner {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 13px 15px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+.network-status-banner strong { color: #065f46; font-size: 0.86rem; }
+.network-status-banner p { font-size: 0.78rem; color: #047857; margin-top: 3px; }
+
+.lan-urls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0 18px;
+}
+
+.lan-url-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--stone-50);
+  border: 1px solid var(--stone-200);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.reset-zone {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--stone-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Toast Bildirimleri */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 2000;
+}
+
+.toast {
+  background: var(--obsidian-900);
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 14px 28px rgba(7, 10, 16, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid var(--gold-500);
+}
+
+/* ==========================================================================
+   TUVAL ÜSTÜ YAKINLAŞTIRMA (ZOOM) & MOBİL KART GÖRÜNÜMÜ ÇUBUĞU
+   ========================================================================== */
+.canvas-top-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--stone-200);
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+
+.canvas-zoom-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--stone-100);
+  padding: 3px;
+  border-radius: 7px;
+  border: 1px solid var(--stone-200);
+}
+
+.btn-zoom {
+  height: 28px;
+  min-width: 28px;
+  padding: 0 8px;
+  border-radius: 5px;
+  border: none;
+  background: #ffffff;
+  color: var(--obsidian-900);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  transition: all 0.14s;
+}
+
+.btn-zoom:hover {
+  background: var(--obsidian-900);
+  color: #ffffff;
+}
+
+.btn-zoom-label {
+  min-width: 62px;
+  font-family: var(--font-sans);
+}
+
+.canvas-mobile-hint {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.btn-mobile-cards-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 7px;
+  border: 1px solid var(--stone-200);
+  background: #ffffff;
+  color: var(--obsidian-900);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-mobile-cards-toggle.active,
+.btn-mobile-cards-toggle:hover {
+  background: var(--obsidian-900);
+  color: var(--gold-300);
+  border-color: var(--obsidian-900);
+}
+
+/* Mobil / Hızlı Daire Kartları Grid Görünümü */
+.mobile-floor-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.mob-unit-card {
+  border-radius: 10px;
+  padding: 12px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  transition: transform 0.14s ease;
+}
+
+.mob-unit-card:active {
+  transform: scale(0.97);
+}
+
+.mob-unit-card.st-SATILIK {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #475569;
+}
+.mob-unit-card.st-KAPORA {
+  background: #d97706;
+  color: #ffffff;
+  border: 1.5px solid #92400e;
+}
+.mob-unit-card.st-PESINAT {
+  background: #2563eb;
+  color: #ffffff;
+  border: 1.5px solid #1e40af;
+}
+.mob-unit-card.st-SATILDI {
+  background: #dc2626;
+  color: #ffffff;
+  border: 1.5px solid #991b1b;
+}
+.mob-unit-card.st-KAPALI {
+  background: repeating-linear-gradient(
+    -45deg,
+    #dc2626 0px,
+    #dc2626 11px,
+    #ffffff 11px,
+    #ffffff 22px
+  );
+  color: #0f172a;
+  border: 2px solid #991b1b;
+}
+.mob-unit-card.st-KAPALI .mob-unit-card-top,
+.mob-unit-card.st-KAPALI .mob-unit-card-num {
+  background: rgba(255, 255, 255, 0.94);
+  color: #0f172a;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.mob-unit-card.st-KAPALI .mob-unit-card-price {
+  background: #991b1b;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+}
+.mob-unit-card.st-SATISA_KAPALI {
+  background: repeating-linear-gradient(
+    -45deg,
+    #0f172a 0px,
+    #0f172a 11px,
+    #ffffff 11px,
+    #ffffff 22px
+  );
+  color: #0f172a;
+  border: 2px solid #0f172a;
+}
+.mob-unit-card.st-SATISA_KAPALI .mob-unit-card-top,
+.mob-unit-card.st-SATISA_KAPALI .mob-unit-card-num {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.mob-unit-card.st-SATISA_KAPALI .mob-unit-card-price {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+}
+
+.mob-unit-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-weight: 800;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+.mob-unit-card-num {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.mob-unit-card-price {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.24);
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.mob-unit-card.st-SATILIK .mob-unit-card-price {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+/* Masaüstünde Gizli Olan Mobil Öğeler */
+.mobile-sheet-header,
+.mobile-bottom-nav,
+.mobile-menu-label {
+  display: none;
+}
+
+/* ==========================================================================
+   TABLET / IPAD VE MOBİL UYUMLULUK (RESPONSIVE STUDIO)
+   ========================================================================== */
+@media (max-width: 1360px) {
+  .studio-floorplan-layout {
+    grid-template-columns: 165px minmax(0, 1fr) 300px;
+  }
+  .studio-floorplan-layout.right-collapsed {
+    grid-template-columns: 165px minmax(0, 1fr) 0px;
+  }
+}
+
+@media (max-width: 1140px) {
+  html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+    width: 100%;
+    max-width: 100vw;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .studio-shell,
+  .studio-shell.left-collapsed {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100%;
+    max-width: 100vw;
+    height: auto;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Sol Proje Portföy Menüsü: Mobilde Soldan Kayan Çekmece */
+  .studio-sidebar,
+  .studio-shell.left-collapsed .studio-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: min(320px, 88vw);
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transform: translate3d(-105%, 0, 0);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+    box-shadow: none;
+    z-index: 450;
+  }
+
+  .studio-sidebar.open,
+  .studio-shell.left-collapsed .studio-sidebar.open {
+    transform: translate3d(0, 0, 0);
+    box-shadow: 14px 0 38px rgba(0, 0, 0, 0.55);
+  }
+
+  .studio-sidebar .sidebar-brand,
+  .studio-sidebar .sidebar-nav-section,
+  .studio-sidebar .sidebar-telemetry,
+  .studio-sidebar .sidebar-projects-header,
+  .studio-sidebar .sidebar-footer {
+    flex-shrink: 0;
+  }
+
+  .studio-sidebar .sidebar-project-list {
+    flex: 1 0 auto;
+    min-height: 240px;
+    max-height: none;
+    overflow-y: visible;
+    padding-bottom: 12px;
+  }
+
+  .studio-sidebar .sidebar-collapse-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .mobile-sidebar-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  .mobile-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 10, 16, 0.62);
+    z-index: 440;
+  }
+
+  /* Üst Proje Komuta Barı: Kompakt Mobil Başlık */
+  .project-command-bar {
+    position: sticky;
+    top: 0;
+    z-index: 120;
+    padding: 8px 12px;
+    min-height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .command-bar-left {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .mobile-menu-trigger {
+    display: inline-flex;
+    width: auto;
+    height: 34px;
+    padding: 0 10px;
+    gap: 6px;
+    background: var(--obsidian-900);
+    color: #ffffff;
+    border-color: var(--obsidian-900);
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-label {
+    display: inline;
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .active-project-identity {
+    flex: 1;
+    min-width: 0;
+    gap: 6px;
+  }
+
+  .cmd-proj-title {
+    font-size: 0.94rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cmd-proj-pills {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+    scrollbar-width: none;
+    gap: 5px;
+    padding-bottom: 2px;
+  }
+  .cmd-proj-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cmd-meta-pill {
+    white-space: nowrap;
+    font-size: 0.68rem;
+    padding: 2px 7px;
+  }
+
+  .command-bar-right {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+  .command-bar-right::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-live-metrics {
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
+
+  .proj-metric-chip {
+    white-space: nowrap;
+    padding: 3px 8px;
+    font-size: 0.68rem;
+  }
+
+  .studio-main {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    height: auto;
+    min-height: calc(100dvh - 66px);
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .studio-workspace-body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .studio-floorplan-layout,
+  .studio-floorplan-layout.right-collapsed {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  /* Kat Seçici: Mobilde Yatay Kaydırılabilir Kompakt Şerit */
+  .elevation-dock {
+    border-right: none;
+    border-bottom: 1px solid var(--stone-200);
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 8px 12px;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: #ffffff;
+  }
+  .elevation-dock::-webkit-scrollbar {
+    display: none;
+  }
+
+  .elevation-header {
+    display: none;
+  }
+
+  .floor-tabs {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    border-left: none;
+    padding-left: 0;
+    gap: 6px;
+  }
+
+  .floor-btn {
+    width: auto;
+    min-width: 108px;
+    padding: 7px 10px;
+    flex-shrink: 0;
+  }
+
+  .floor-btn::before {
+    display: none;
+  }
+
+  .elevation-tools {
+    border-top: none;
+    padding-top: 0;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .studio-toggle-row {
+    white-space: nowrap;
+    font-size: 0.68rem;
+  }
+
+  .btn-elevation-tool {
+    width: auto;
+    white-space: nowrap;
+    padding: 6px 9px;
+    font-size: 0.7rem;
+  }
+
+  /* Merkez Tuval Sahnesi: Dokunmatik Kaydırma (Pan & Zoom) */
+  .canvas-viewport-column {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 10px 10px 24px;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .floorplan-stage-wrapper {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex: 0 0 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+  }
+
+  .canvas-floating-bar {
+    position: relative;
+    margin-top: 10px;
+  }
+
+  .viewer-mode-bar,
+  .admin-mode-bar {
+    width: 100%;
+    justify-content: center;
+    border-radius: 12px;
+    padding: 8px 10px;
+  }
+
+  /* Sağ Denetçi Paneli: Mobilde Alttan Kayarak Açılan Bottom Sheet! */
+  .mobile-inspector-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 10, 16, 0.58);
+    z-index: 340;
+  }
+
+  .studio-inspector,
+  .studio-floorplan-layout.right-collapsed .studio-inspector {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    max-height: 84dvh;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    border-left: none !important;
+    border-top: 2px solid var(--gold-500);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -16px 40px rgba(7, 10, 16, 0.38);
+    z-index: 350;
+    transform: translate3d(0, 105%, 0);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .studio-inspector.mobile-sheet-open,
+  .studio-floorplan-layout.right-collapsed .studio-inspector.mobile-sheet-open {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .mobile-sheet-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px 6px;
+    background: var(--obsidian-900);
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .mobile-sheet-drag-handle {
+    width: 42px;
+    height: 4px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.28);
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .mobile-sheet-title-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mobile-sheet-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--gold-300);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .mobile-sheet-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Sabit Mobil Alt Navigasyon Barı (iOS / Android Sekme Çubuğu) */
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(60px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--obsidian-950);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    z-index: 320;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .mob-nav-btn {
+    position: relative;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-family: var(--font-sans);
+    font-size: 0.64rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 4px 2px;
+  }
+
+  .mob-nav-btn.active {
+    color: var(--gold-400);
+  }
+
+  .mob-nav-badge {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 18px);
+    background: #dc2626;
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 99px;
+  }
+
+  /* Toast Bildirimi: Alt Navigasyonun Üstünde Dursun */
+  .toast-container {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    right: 12px;
+    left: 12px;
+  }
+}
+
+/* Küçük Telefon Ekranları (<= 640px) İçin Özel İyileştirmeler */
+@media (max-width: 640px) {
+  .hide-on-xs {
+    display: none !important;
+  }
+
+  .canvas-mobile-hint {
+    display: none;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .modal-backdrop {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .modal-box,
+  .modal-box.modal-lg {
+    max-width: 100%;
+    max-height: 84dvh;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .summary-section {
+    padding: 12px 10px;
+  }
+
+  .filter-bar {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .apt-table th,
+  .apt-table td {
+    padding: 8px 10px;
+    font-size: 0.74rem;
+    white-space: nowrap;
+  }
+}
+
+@media print {
+  .studio-sidebar,
+  .project-command-bar,
+  .elevation-dock,
+  .canvas-top-toolbar,
+  .canvas-floating-bar,
+  .studio-inspector,
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+  .studio-shell,
+  .studio-main,
+  .studio-workspace-body,
+  .studio-floorplan-layout,
+  .canvas-viewport-column {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+}
+
